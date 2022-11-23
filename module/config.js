@@ -13,7 +13,8 @@ const MESSAGE_ERROR = {
     NOT_FOUND_DB      : 'Não foram encontrados registros no banco de dados!',
     INTERNAL_ERROR_DB : 'Não foi possível realizar a operação com o Banco de Dados!',
     REQUIRED_ID       : 'O id do registro é obrigatório neste tipo de requisição',
-    NOT_A_NUMBER      : 'Existe(m) campo(s) que necessita(m) de números como dado'
+    NOT_A_NUMBER      : 'Existe(m) campo(s) que necessita(m) de números como dado',
+    LIMIT_EXCEEDED    : 'Existe(m) campo(s), cujo tamanho excede o limite.'
 };
 
 const MESSAGE_SUCESS = {

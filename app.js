@@ -30,10 +30,10 @@ app.use((request, response, next) => {
 //objeto que permite receber um JSON no body das requisições
 const jsonParser = bodyParser.json();
 
-/****************************
+/* * * * * * * * * * * * * * * * * * * * *
     rotas para CRUD de cliente (Create, Read, Update e Delete) de alunos
     data: 23/11/2022
-****************************/
+* * * * * * * * * * * * * * * * * * * * */
 
 //Endpoint para inserir um novo cliente
 app.post('/v1/cliente', cors(), jsonParser, async function(request, response) {
