@@ -50,15 +50,15 @@ const insertCliente = async function (cliente) {
 
 }
 
-//função para atualizar um registro no BF
+//função para atualizar um registro no BD
 const updateCliente = async function (cliente) {
 
     try {
 
         let sql = `update tbl_adm set nome = '${cliente.nome}',
-                                      email = '${curso.email}',
-                                      senha = '${curso.senha}',
-                                      where id = ${curso.id};`;
+                                      email = '${cliente.email}',
+                                      senha = '${cliente.senha}'
+                                      where id = ${cliente.id};`;
 
         //execura o script SQL no BD ($executeRawUnsafe() permite encaminhar uma variável contendo o script)
         const result = await prisma.$executeRawUnsafe(sql);
@@ -104,8 +104,9 @@ const deleteCliente = async function (id) {
 //função para validar o login 
 const selectCliente = async function (email, senha) {
 
+    let sql = `select nome from tbl_adm where email = '${email}' and senha = '${senha}';`
     //objeto do tipo RecordSet (rsCliente) para receber os dados do BD
-    const rsCliente = await prisma.$queryRaw`select nome from tbl_adm where email = ${email} and senha = ${senha}`;
+    const rsCliente = await prisma.$queryRawUnsafe(sql);
 
     if (rsCliente.length > 0) {
 

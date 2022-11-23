@@ -1,13 +1,13 @@
 /*******************************************************************************************************************
 * Objetivo: arquivo responsável pela manipulação de recebimento, tratamento e retorno de dados entre e API e a model
 * Autor: Eduardo Moreira Machado
-* Data de criação: 27/10/2022
+* Data de criação: 21/11/2022
 * Versão: 1.0
 *******************************************************************************************************************/
 
 const { MESSAGE_ERROR, MESSAGE_SUCESS } = require('../module/config.js');
 
-//função para gerar um novo cliente
+//função para gerar um novo registro
 const novoCliente = async function (cliente) {
 
     //validação de campos obrigatórios
@@ -84,9 +84,9 @@ const excluirCliente = async function (id) {
 
     } else {
 
-        const removerCurso = require('../model/DAO/curso.js');
+        const removerCliente = require('../model/DAO/cliente.js');
 
-        const result = await removerCurso.deleteCurso(id);
+        const result = await removerCliente.deleteCliente(id);
 
         if (result) {
 
@@ -103,7 +103,10 @@ const excluirCliente = async function (id) {
 }
 
 //função para validar registros
-const validarCliente = async function (email, senha) {
+const validarCliente = async function (cliente) {
+
+    let email = await cliente.email;
+    let senha = await cliente.senha;
 
     if (email == undefined || senha == undefined ||
         email == '' || senha == '') {
