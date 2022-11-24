@@ -24,7 +24,7 @@ const insertContato = async function(contato) {
                                                 telefone,
                                                 celular,
                                                 mensagem,
-                                                tbl_opcao_id 
+                                                id_opcao 
                                                 )
                                         values (
                                                 '${dadosContato.nome}',
@@ -32,7 +32,7 @@ const insertContato = async function(contato) {
                                                 '${dadosContato.telefone}',
                                                 '${dadosContato.celular}',
                                                 '${dadosContato.mensagem}',
-                                                '${dadosContato.tbl_opcao_id}'
+                                                '${dadosContato.id_opcao}'
                                                 );`
                                                 
         //execura o script SQL no BD ($executeRawUnsafe() permite encaminhar uma variável contendo o script)
@@ -60,7 +60,7 @@ const selectContatoByID = async function(id) {
 
                          from   tbl_contato
                                 inner join tbl_opcao
-                                on		   tbl_contato.tbl_opcao_id = tbl_opcao.id
+                                on		   tbl_contato.id_opcao = tbl_opcao.id
                          
                          where tbl_contato.id = ${idContato}`
 
@@ -87,7 +87,7 @@ const selectAllContatos = async function() {
 
                          from   tbl_contato
                                 inner join tbl_opcao
-                                on		   tbl_contato.tbl_opcao_id = tbl_opcao.id
+                                on		   tbl_contato.id_opcao = tbl_opcao.id
                                 
                          order by tbl_contato.id desc`
                         

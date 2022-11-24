@@ -18,8 +18,8 @@ const newContato = async function(contato) {
     let contatoJSON = contato
 
     // Validação de campos obrigatórios
-    if (contatoJSON.nome == '' || contatoJSON.celular == '' || contatoJSON.mensagem == '' || contatoJSON.tbl_opcao_id == '' || contatoJSON.email == '' ||
-        contatoJSON.nome == undefined || contatoJSON.celular == undefined || contatoJSON.mensagem == undefined || contatoJSON.tbl_opcao_id == undefined || contatoJSON.email == undefined)
+    if (contatoJSON.nome == '' || contatoJSON.celular == '' || contatoJSON.mensagem == '' || contatoJSON.id_opcao == '' || contatoJSON.email == '' ||
+        contatoJSON.nome == undefined || contatoJSON.celular == undefined || contatoJSON.mensagem == undefined || contatoJSON.id_opcao == undefined || contatoJSON.email == undefined)
         return { statusCode: 400, message: MESSAGE_ERROR.REQUIRED_FIELDS }
 
     // Validação para verificar se o email é válido
@@ -51,30 +51,36 @@ const getAllContatos = async function() {
 
     if (dadosContatos) {
         contatosJSON.statusCode = 200
-        contatosJSON.cursos = dadosContatos
+        contatosJSON.message = dadosContatos
 
         return contatosJSON
     }
 
     else
-        return { statusCode: 500, message: MESSAGE_ERROR.INTERNAL_ERROR_DB }
+        return false
 }
 
 // Função para retornar apenas os dados de um contato
 const getContatoByID = async function(id) {
     let idContato = id
-    
-    const dadosContato = modelContato.selectContatoByID(idContato)
 
-    if(dadosContato) {
-        contatoJSON.statusCode = 200
-        contatoJSON.cursos = dadosContato
+    //validação para o id como campo obrigatório
+    if (id == undefined || id == '')
+        return {status: 400, message: MESSAGE_ERROR.REQUIRED_ID};
 
-        return contatoJSON
+    else {
+        const dadosContato = modelContato.selectContatoByID(idContato)
+
+        if(dadosContato) {
+            contatoJSON.statusCode = 200
+            contatoJSON.message = dadosContato
+
+            return contatoJSON
+        }
+
+        else
+            return false
     }
-
-    else
-        return { statusCode: 500, message: MESSAGE_ERROR.INTERNAL_ERROR_DB }
 }
 
 module.exports = {

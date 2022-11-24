@@ -1,6 +1,6 @@
 /******************************************************************************************
 * Objetivo: API responsável pela manipulação de dados do back-end (get, post, put e delete)
-* Autor: Eduardo Moreira Machado
+* Autor: Eduardo Moreira Machado e Marina Santello Pimentel
 * Data de criação: 21/11/2022
 * Versão: 1.0
 ******************************************************************************************/
@@ -31,7 +31,7 @@ app.use((request, response, next) => {
 const jsonParser = bodyParser.json();
 
 /* * * * * * * * * * * * * * * * * * * * *
-    rotas para CRUD de cliente (Create, Read, Update e Delete) de alunos
+    rotas para CRUD de cliente (Create, Read, Update e Delete)
     data: 23/11/2022
 * * * * * * * * * * * * * * * * * * * * */
 
@@ -217,10 +217,10 @@ app.post('/v1/loginCliente', cors(), jsonParser, async function(request, respons
 
 });
 
-/****************************
-    rotas para CRUD de serviços (Create, Read, Update e Delete) de alunos
-    data: 27/10/2022
-****************************/
+/* * * * * * * * * * * * * * * * * * * * *
+    rotas para CRUD de serviços (Create, Read, Update e Delete)
+    data: 23/11/2022
+* * * * * * * * * * * * * * * * * * * * */
 
 //EndPoint para listar todos os servicos
 app.get('/v1/servicos', cors(), async function(request, response) {
@@ -269,6 +269,7 @@ app.post('/v1/servico', cors(), jsonParser, async function(request, response) {
         
         //recebe do corpo da mensagem o conteúdo
         let dadosBody = request.body;
+        console.log(dadosBody)
 
         //realiza um processo de conversão de dados para conseguir comparar o JSON vazio
         if (JSON.stringify(dadosBody) != '{}') {
@@ -434,6 +435,106 @@ app.get('/v1/servico/:id', cors(), async function(request, response) {
     response.json(message);
 
 });
+
+/* * * * * * * * * * * * * * * * * * * * *
+    rotas para CRUD de contatos (Create, Read, Update e Delete)
+    data: 24/11/2022
+* * * * * * * * * * * * * * * * * * * * */
+
+// Import da Controller de Contato
+const controllerContato = require('./controller/controllerContato.js');
+
+//EndPoint para listar todos os contatos
+app.get('/v1/contatos', cors(), async function(request, response) {
+    let statusCode
+    let message
+
+    //retorna todos os contatos existentes no BD
+    const dadosContatos = await controllerContato.getAllContatos()
+
+    //valida se existe retorno de dados
+    if (dadosServicos) {
+        //status 200
+        statusCode = dadosContatos.statusCode
+        message = dadosContatos.message
+    } else {
+        //status 404: não foi encontrado dados no banco
+        statusCode = 404;
+        message = MESSAGE_ERROR.NOT_FOUND_DB;
+    }
+
+    //retorna os dados da API
+    response.status(statusCode);
+    response.json(message);
+})
+
+//EnPoint para buscar um contato pelo ID
+app.get('/v1/contato/:id', cors(), async function(request, response) {
+    let statusCode
+    let message
+    let idContato = request.params.id
+
+    //validação do ID na requisição
+    if (idContato != '' && idContato != undefined) {
+        //retorna os dados do contato existentes no BD
+        const dadosContato = await controllerContato.getContatoByID(idContato)
+
+        //valida se existe retorno de dados
+        if (dadosContato) {
+            //status 200
+            statusCode = dadosContato.statusCode
+            message = dadosContato.message
+
+        } else {
+            //status 404
+            statusCode = 404;
+            message = MESSAGE_ERROR.NOT_FOUND_DB
+        }
+
+    } else {
+        statusCode = 400; 
+        message = MESSAGE_ERROR.REQUIRED_ID
+    }
+
+    //retorna os dados da API
+    response.status(statusCode)
+    response.json(message)
+})
+
+app.post('/v1/contato', cors(), jsonParser, async function(request, response) {
+    let statusCode;
+    let message;
+    let headerContentType;
+
+    //recebe o tipo de content-type que foi enviado no header da requisição
+    headerContentType = request.headers['content-type'];
+
+    if (headerContentType == 'application/json') {
+        
+        //recebe do corpo da mensagem o conteúdo
+        let dadosBody = request.body;
+
+        //realiza um processo de conversão de dados para conseguir comparar o JSON vazio
+        if (JSON.stringify(dadosBody) != '{}') {
+            //chama a função novo aluno da controller e encaminha os dados do body
+            const novoContato = await controllerContato.newContato(dadosBody)
+
+            statusCode = novoServico.status;
+            message = novoServico.message;    
+
+        } else {
+            statusCode = 400;
+            message = MESSAGE_ERROR.EMPTY_BODY;
+        }
+
+    } else {
+        statusCode = 415;
+        message = MESSAGE_ERROR.CONTENT_TYPE;
+    }
+
+    response.status(statusCode);
+    response.json(message);
+})
 
 //ativa o servidor para receber requisições HTTP
 app.listen(8080, function() {
