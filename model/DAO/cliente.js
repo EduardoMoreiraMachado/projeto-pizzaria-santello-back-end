@@ -104,7 +104,7 @@ const deleteCliente = async function (id) {
 //função para validar o login 
 const selectCliente = async function (email, senha) {
 
-    let sql = `select nome from tbl_adm where email = '${email}' and senha = '${senha}';`
+    let sql = `select * from tbl_adm where email = '${email}' and senha = '${senha}';`
     //objeto do tipo RecordSet (rsCliente) para receber os dados do BD
     const rsCliente = await prisma.$queryRawUnsafe(sql);
 

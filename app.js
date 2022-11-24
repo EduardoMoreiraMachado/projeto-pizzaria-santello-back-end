@@ -173,7 +173,7 @@ app.delete('/v1/cliente/:id', cors(), jsonParser, async function(request, respon
 });
 
 //EnPoint para buscar um cliente pelo email e senha
-app.post('/v1/loginCliente', cors(), async function(request, response) {
+app.post('/v1/loginCliente', cors(), jsonParser, async function(request, response) {
 
     let statusCode;
     let message;

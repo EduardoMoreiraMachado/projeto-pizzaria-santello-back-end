@@ -121,7 +121,7 @@ const validarCliente = async function (cliente) {
 
         if (result) {
 
-            return {status: 200, message: MESSAGE_SUCESS.DELETE_ITEM};
+            return {status: 200, message: result};
 
         } else {
 
