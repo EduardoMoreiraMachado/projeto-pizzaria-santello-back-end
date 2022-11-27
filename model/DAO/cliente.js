@@ -29,7 +29,7 @@ const insertCliente = async function (cliente) {
                                        );
                                        `;
                         
-        //execura o script SQL no BD ($executeRawUnsafe() permite encaminhar uma variável contendo o script)
+        //executa o script SQL no BD ($executeRawUnsafe() permite encaminhar uma variável contendo o script)
         const result = await prisma.$executeRawUnsafe(sql);
 
         if (result) {

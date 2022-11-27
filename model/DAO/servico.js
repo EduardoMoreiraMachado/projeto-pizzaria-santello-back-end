@@ -128,12 +128,12 @@ const selectAllServicos = async function () {
     //instãncia da classe prismaClient
     const prisma = new PrismaClient();
 
-    //objeto do tipo RecordSet (rsCursos) para receber os dados do BD
-    const rsCursos = await prisma.$queryRaw`select * from tbl_servico order by id desc`;
+    //objeto do tipo RecordSet (rsCategorias) para receber os dados do BD
+    const rsServicos = await prisma.$queryRaw`select * from tbl_servico order by id desc`;
 
-    if (rsCursos.length > 0) {
+    if (rsServicos.length > 0) {
 
-        return rsCursos;
+        return rsServicos;
 
     } else {
 
