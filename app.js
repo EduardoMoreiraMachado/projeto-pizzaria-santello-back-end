@@ -390,7 +390,7 @@ app.delete('/v1/servico/:id', cors(), jsonParser, async function(request, respon
 });
 
 //EnPoint para buscar um serviço pelo ID
-app.get('/v1/servico/:id', cors(), async function(request, response) {
+app.get('/v1/getServico/:id', cors(), async function(request, response) {
 
     let statusCode;
     let message;
@@ -450,7 +450,7 @@ app.get('/v1/contatos', cors(), async function(request, response) {
     const dadosContatos = await controllerContato.getAllContatos()
 
     //valida se existe retorno de dados
-    if (dadosServicos) {
+    if (dadosContatos) {
         //status 200
         statusCode = dadosContatos.statusCode
         message = dadosContatos.message
@@ -466,7 +466,7 @@ app.get('/v1/contatos', cors(), async function(request, response) {
 })
 
 //EnPoint para buscar um contato pelo ID
-app.get('/v1/contato/:id', cors(), async function(request, response) {
+app.get('/v1/getContato/:id', cors(), async function(request, response) {
     let statusCode
     let message
     let idContato = request.params.id
@@ -516,7 +516,7 @@ app.post('/v1/contato', cors(), jsonParser, async function(request, response) {
             //chama a função novo aluno da controller e encaminha os dados do body
             const novoContato = await controllerContato.newContato(dadosBody)
 
-            statusCode = novoContato.status;
+            statusCode = novoContato.statusCode;
             message = novoContato.message;    
 
         } else {

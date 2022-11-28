@@ -15,7 +15,7 @@ const modelContato = require('../model/DAO/contato')
 
 // Função para mandar as informações do novo contato e mensagem para a model
 const newContato = async function(contato) {
-    let contatoJSON = contato
+    let contatoJSON = await contato
 
     // Validação de campos obrigatórios
     if (contatoJSON.nome == '' || contatoJSON.celular == '' || contatoJSON.mensagem == '' || contatoJSON.id_opcao == '' || contatoJSON.email == '' ||
@@ -63,9 +63,10 @@ const getAllContatos = async function() {
 // Função para retornar apenas os dados de um contato
 const getContatoByID = async function(id) {
     let idContato = id
+    let contatoJSON = {}
 
     //validação para o id como campo obrigatório
-    if (id == undefined || id == '')
+    if (idContato == undefined || idContato == '')
         return {status: 400, message: MESSAGE_ERROR.REQUIRED_ID};
 
     else {
@@ -73,7 +74,7 @@ const getContatoByID = async function(id) {
 
         if(dadosContato) {
             contatoJSON.statusCode = 200
-            contatoJSON.message = dadosContato
+            contatoJSON.message = await dadosContato
 
             return contatoJSON
         }
