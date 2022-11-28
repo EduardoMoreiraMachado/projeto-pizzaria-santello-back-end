@@ -56,7 +56,6 @@ app.post('/v1/cliente', cors(), jsonParser, async function(request, response) {
             //import do arquivo da controller de cliente
             const controllerCliente = require('./controller/controllerCliente.js');
             //chama a função novo aluno da controller e encaminha os dados do body
-            console.log(dadosBody)
             const novoCliente = await controllerCliente.novoCliente(dadosBody);
 
             statusCode = novoCliente.status;
@@ -269,8 +268,6 @@ app.post('/v1/servico', cors(), jsonParser, async function(request, response) {
         
         //recebe do corpo da mensagem o conteúdo
         let dadosBody = request.body;
-        console.log(dadosBody)
-
         //realiza um processo de conversão de dados para conseguir comparar o JSON vazio
         if (JSON.stringify(dadosBody) != '{}') {
 
@@ -519,8 +516,8 @@ app.post('/v1/contato', cors(), jsonParser, async function(request, response) {
             //chama a função novo aluno da controller e encaminha os dados do body
             const novoContato = await controllerContato.newContato(dadosBody)
 
-            statusCode = novoServico.status;
-            message = novoServico.message;    
+            statusCode = novoContato.status;
+            message = novoContato.message;    
 
         } else {
             statusCode = 400;
@@ -588,8 +585,6 @@ app.post('/v1/categoria', cors(), jsonParser, async function(request, response) 
         
         //recebe do corpo da mensagem o conteúdo
         let dadosBody = request.body;
-        console.log(dadosBody)
-
         //realiza um processo de conversão de dados para conseguir comparar o JSON vazio
         if (JSON.stringify(dadosBody) != '{}') {
 
@@ -634,7 +629,7 @@ app.delete('/v1/categoria/:id', cors(), jsonParser, async function(request, resp
         //import do arquivo da controller de categoria
         const controllerCategoria = require('./controller/controllerCategoria.js');
         //chama a função para exlcuir uma categoria da controller
-        const deleteCategoria = await controllerCategoria.excluirCateforia(id);
+        const deleteCategoria = await controllerCategoria.excluirCategoria(id);
 
         statusCode = deleteCategoria.status;
         message = deleteCategoria.message;    
@@ -703,8 +698,6 @@ app.post('/v1/ingrediente', cors(), jsonParser, async function(request, response
         
         //recebe do corpo da mensagem o conteúdo
         let dadosBody = request.body;
-        console.log(dadosBody)
-
         //realiza um processo de conversão de dados para conseguir comparar o JSON vazio
         if (JSON.stringify(dadosBody) != '{}') {
 

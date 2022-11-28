@@ -60,7 +60,7 @@ const updateCliente = async function (cliente) {
                                       senha = '${cliente.senha}'
                                       where id = ${cliente.id};`;
 
-        //execura o script SQL no BD ($executeRawUnsafe() permite encaminhar uma variável contendo o script)
+        //executa o script SQL no BD ($executeRawUnsafe() permite encaminhar uma variável contendo o script)
         const result = await prisma.$executeRawUnsafe(sql);
 
         if (result) {
@@ -86,7 +86,7 @@ const deleteCliente = async function (id) {
 
     let sql = `delete from tbl_adm where id = ${id};`;
 
-    //execura o script SQL no BD ($executeRawUnsafe() permite encaminhar uma variável contendo o script)
+    //executa o script SQL no BD ($executeRawUnsafe() permite encaminhar uma variável contendo o script)
     const result = await prisma.$executeRawUnsafe(sql);
 
     if (result) {

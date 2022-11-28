@@ -46,7 +46,7 @@ const excluirIngrediente = async function (id) {
 
     } else {
 
-        const removerIngrediente = require('../model/DAO/ingrediene.js');
+        const removerIngrediente = require('../model/DAO/ingrediente.js');
 
         const result = await removerIngrediente.deleteIngrediente(id);
 

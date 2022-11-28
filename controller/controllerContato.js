@@ -32,7 +32,7 @@ const newContato = async function(contato) {
     
     else {
         // Chama a função para inserir um novo aluno
-        const result = await modelContato.insertContato(cursoJSON)
+        const result = await modelContato.insertContato(contatoJSON)
 
         // Verificação do retono da função (se deu certo a inserção ou não)
         if (result)

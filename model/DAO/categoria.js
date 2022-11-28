@@ -16,7 +16,7 @@ const insertCategoria = async function(categoria) {
 
     try {
 
-        let sql = `insert into tbl_categoria(nome) values(${categoria.nome})`;
+        let sql = `insert into tbl_categoria(nome) values('${categoria.nome}')`;
 
         //executa o script SQL no BD ($executeRawUnsafe() permite encaminhar uma variável contendo o script)
         const result = await prisma.$executeRawUnsafe(sql);
@@ -80,7 +80,7 @@ const selectAllCategorias = async function () {
 module.exports = {
 
     insertCategoria,
-    deleteCateoria,
+    deleteCategoria,
     selectAllCategorias
 
 }

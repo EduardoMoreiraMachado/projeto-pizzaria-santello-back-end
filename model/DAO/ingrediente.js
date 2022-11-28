@@ -16,7 +16,7 @@ const insertIngrediente = async function(ingrediente) {
 
     try {
 
-        let sql = `insert into tbl_ingrediente(nome) values(${ingrediente.nome})`;
+        let sql = `insert into tbl_ingrediente(nome) values('${ingrediente.nome}')`;
 
         //executa o script SQL no BD ($executeRawUnsafe() permite encaminhar uma variável contendo o script)
         const result = await prisma.$executeRawUnsafe(sql);
@@ -44,7 +44,7 @@ const deleteIngrediente = async function (id) {
 
     let sql = `delete from tbl_ingrediente where id = ${id};`;
 
-    //execura o script SQL no BD ($executeRawUnsafe() permite encaminhar uma variável contendo o script)
+    //executa o script SQL no BD ($executeRawUnsafe() permite encaminhar uma variável contendo o script)
     const result = await prisma.$executeRawUnsafe(sql);
 
     if (result) {

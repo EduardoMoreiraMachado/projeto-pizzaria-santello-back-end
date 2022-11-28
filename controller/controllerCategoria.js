@@ -28,7 +28,7 @@ const novaCategoria = async function (categoria) {
 
         } else {
 
-            return {status: 500, message:MESSAGE_ERROR.INTERNAL_ERROR_DB};
+            return {status: 500, message: MESSAGE_ERROR.INTERNAL_ERROR_DB};
 
         }
 
@@ -48,7 +48,7 @@ const excluirCategoria = async function (id) {
 
         const removerCategoria = require('../model/DAO/categoria.js');
 
-        const result = await removerCategoria.deleteCateoria(id);
+        const result = await removerCategoria.deleteCategoria(id);
 
         if (result) {
 
