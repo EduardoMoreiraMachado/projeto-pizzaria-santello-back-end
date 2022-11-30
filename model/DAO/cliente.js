@@ -25,7 +25,7 @@ const insertCliente = async function (cliente) {
                                        (
                                            '${cliente.nome}',
                                            '${cliente.email}',
-                                           '${cliente.senha}'
+                                           md5('${cliente.senha}')
                                        );
                                        `;
                         
@@ -57,7 +57,7 @@ const updateCliente = async function (cliente) {
 
         let sql = `update tbl_adm set nome = '${cliente.nome}',
                                       email = '${cliente.email}',
-                                      senha = '${cliente.senha}'
+                                      senha = md5('${cliente.senha})'
                                       where id = ${cliente.id};`;
 
         //executa o script SQL no BD ($executeRawUnsafe() permite encaminhar uma variável contendo o script)
@@ -104,7 +104,7 @@ const deleteCliente = async function (id) {
 //função para validar o login 
 const selectCliente = async function (email, senha) {
 
-    let sql = `select * from tbl_adm where email = '${email}' and senha = '${senha}';`
+    let sql = `select * from tbl_adm where email = '${email}' and senha = md5('${senha}');`
     //objeto do tipo RecordSet (rsCliente) para receber os dados do BD
     const rsCliente = await prisma.$queryRawUnsafe(sql);
 

@@ -216,6 +216,7 @@ app.post('/v1/loginCliente', cors(), jsonParser, async function(request, respons
 
 });
 
+
 /* * * * * * * * * * * * * * * * * * * * *
     rotas para CRUD de serviços (Create, Read, Update e Delete)
     data: 23/11/2022
@@ -390,7 +391,7 @@ app.delete('/v1/servico/:id', cors(), jsonParser, async function(request, respon
 });
 
 //EnPoint para buscar um serviço pelo ID
-app.get('/v1/getServico/:id', cors(), async function(request, response) {
+app.get('/v1/servico/:id', cors(), async function(request, response) {
 
     let statusCode;
     let message;
@@ -432,6 +433,7 @@ app.get('/v1/getServico/:id', cors(), async function(request, response) {
     response.json(message);
 
 });
+
 
 /* * * * * * * * * * * * * * * * * * * * *
     rotas para CRUD de contatos (Create, Read, Update e Delete)
@@ -532,6 +534,7 @@ app.post('/v1/contato', cors(), jsonParser, async function(request, response) {
     response.status(statusCode);
     response.json(message);
 });
+
 
 /* * * * * * * * * * * * * * * * * * * * *
     rotas para CRUD de categorias (Create, Read, Update e Delete)
@@ -646,6 +649,7 @@ app.delete('/v1/categoria/:id', cors(), jsonParser, async function(request, resp
 
 });
 
+
 /* * * * * * * * * * * * * * * * * * * * *
     rotas para CRUD de ingredientes (Create, Read, Update e Delete)
     data: 27/11/2022
@@ -749,6 +753,40 @@ app.delete('/v1/ingrediente/:id', cors(), jsonParser, async function(request, re
 
     } else {
 
+        statusCode = 400;
+        message = MESSAGE_ERROR.REQUIRED_ID;
+
+    }
+
+    response.status(statusCode);
+    response.json(message);
+
+});
+
+
+/* * * * * * * * * * * * * * * * * * * * *
+    rotas para CRUD de pizzas (Create, Read, Update e Delete)
+    data: 30/11/2022
+* * * * * * * * * * * * * * * * * * * * */
+
+app.get('/v1/pizza/:id', cors(), async function(request, response) {
+
+    //recebe o id enviado por parâmetro na requisição
+    let id = request.params.id;
+    let statusCode;
+    let message;
+
+    if (id != '' && id != undefined) {
+        //import do arquivo controllerPizza
+        const controllerPizza = require('./controller/controllerPizza.js');
+
+        const selecionarPizza = await controllerPizza.buscarPizza(id);
+
+        statusCode = selecionarPizza.status;
+        message = selecionarPizza.message;
+
+    } else {
+        
         statusCode = 400;
         message = MESSAGE_ERROR.REQUIRED_ID;
 

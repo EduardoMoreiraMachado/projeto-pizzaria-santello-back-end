@@ -125,7 +125,7 @@ const validarCliente = async function (cliente) {
 
         } else {
 
-            return {status: 500, message: MESSAGE_ERROR.INTERNAL_ERROR_DB};
+            return {status: 403, message: MESSAGE_ERROR.INVALID_LOGIN};
 
         }
 

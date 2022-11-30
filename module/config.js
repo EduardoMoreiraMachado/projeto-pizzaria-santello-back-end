@@ -14,7 +14,8 @@ const MESSAGE_ERROR = {
     INTERNAL_ERROR_DB : 'Não foi possível realizar a operação com o Banco de Dados!',
     REQUIRED_ID       : 'O id do registro é obrigatório neste tipo de requisição',
     NOT_A_NUMBER      : 'Existe(m) campo(s) que necessita(m) de números como dado',
-    LIMIT_EXCEEDED    : 'Existe(m) campo(s), cujo tamanho excede o limite.'
+    LIMIT_EXCEEDED    : 'Existe(m) campo(s), cujo tamanho excede o limite.',
+    INVALID_LOGIN     : 'Email ou senha incorreto(s).'
 };
 
 const MESSAGE_SUCESS = {
