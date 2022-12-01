@@ -60,7 +60,7 @@ const getAllContatos = async function() {
         return false
 }
 
-// Função para retornar apenas os dados de um contato
+// Função para retornar apenas os dados de um contato por meio do ID
 const getContatoByID = async function(id) {
     let idContato = id
     let contatoJSON = {}
@@ -84,8 +84,70 @@ const getContatoByID = async function(id) {
     }
 }
 
+// Função para retornar apenas os dados de um contato por meio da opcao
+const getContatoByOpcao = async function(opcao) {
+    let opcaoContato = opcao.toLowerCase()
+    let contatoJSON = {}
+
+    //validação para o id como campo obrigatório
+    if (opcaoContato == undefined || opcaoContato == '')
+        return {status: 400, message: MESSAGE_ERROR.REQUIRED_ID};
+
+    else {
+        const dadosContato = modelContato.selectContatoByOpcao(opcaoContato)
+
+        if(dadosContato) {
+            contatoJSON.statusCode = 200
+            contatoJSON.message = dadosContato
+
+            return contatoJSON
+        }
+
+        else
+            return false
+    }
+}
+
+
+
+
+
+//EnPoint para buscar um contato pelo ID
+app.get('/v1/contato/:opcao', cors(), async function(request, response) {
+    let statusCode
+    let message
+    let opcaoContato = request.params.opcao
+
+    //validação do ID na requisição
+    if (opcaoContato != '' && opcaoContato != undefined) {
+        //retorna os dados do contato existentes no BD
+        const dadosContato = await controllerContato.getContatoByOpcao(idConopcaoContatotato)
+
+        //valida se existe retorno de dados
+        if (dadosContato) {
+            //status 200
+            statusCode = dadosContato.statusCode
+            message = dadosContato.message
+
+        } else {
+            //status 404
+            statusCode = 404;
+            message = MESSAGE_ERROR.NOT_FOUND_DB
+        }
+
+    } else {
+        statusCode = 400; 
+        message = MESSAGE_ERROR.REQUIRED_ID
+    }
+
+    //retorna os dados da API
+    response.status(statusCode)
+    response.json(message)
+})
+
 module.exports = {
     newContato,
     getAllContatos,
-    getContatoByID
+    getContatoByID,
+    getContatoByOpcao
 }

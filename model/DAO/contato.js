@@ -24,7 +24,7 @@ const insertContato = async function(contato) {
                                                 telefone,
                                                 celular,
                                                 mensagem,
-                                                id_opcao 
+                                                id_opcao
                                                 )
                                         values (
                                                 '${dadosContato.nome}',
@@ -79,6 +79,35 @@ const selectContatoByID = async function(id) {
     }
 }
 
+// Função para consultar uma mensagem no banco de dados
+const selectContatoByOpcao = async function(opcao) {
+    try {
+        let opcaoContato = opcao
+
+        let scriptSQL = `select tbl_contato.nome as nome_contato, tbl_contato.email, tbl_contato.telefone, tbl_contato.celular, tbl_contato.mensagem,
+                                tbl_opcao.nome as nome_opcao
+
+                         from   tbl_contato
+                                inner join tbl_opcao
+                                on		   tbl_contato.id_opcao = tbl_opcao.id
+                         
+                         where nome_opcao = ${opcaoContato}`
+
+        // Criação de objeto do tipo 'RecordSet' (rsAlunos), para receber os dados do DB, através do script SQL (select)
+        const rsContato = await prisma.$queryRawUnsafe(scriptSQL)
+
+        if (rsContato.length > 0)
+            return rsContato
+        
+        else
+            return false
+    }
+
+    catch(error) {
+        return false
+    }
+}
+
 // Função para consultar todas as mensagens do banco de dados
 const selectAllContatos = async function() {
     try {
@@ -110,5 +139,6 @@ const selectAllContatos = async function() {
 module.exports = {
     insertContato,
     selectContatoByID,
-    selectAllContatos
+    selectAllContatos,
+    selectContatoByOpcao
 }
