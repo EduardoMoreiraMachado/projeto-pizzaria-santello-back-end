@@ -468,7 +468,7 @@ app.get('/v1/contatos', cors(), async function(request, response) {
 })
 
 //EnPoint para buscar um contato pelo ID
-app.get('/v1/getContato/:id', cors(), async function(request, response) {
+app.get('/v1/contato/:id', cors(), async function(request, response) {
     let statusCode
     let message
     let idContato = request.params.id
@@ -477,6 +477,39 @@ app.get('/v1/getContato/:id', cors(), async function(request, response) {
     if (idContato != '' && idContato != undefined) {
         //retorna os dados do contato existentes no BD
         const dadosContato = await controllerContato.getContatoByID(idContato)
+
+        //valida se existe retorno de dados
+        if (dadosContato) {
+            //status 200
+            statusCode = dadosContato.statusCode
+            message = dadosContato.message
+
+        } else {
+            //status 404
+            statusCode = 404;
+            message = MESSAGE_ERROR.NOT_FOUND_DB
+        }
+
+    } else {
+        statusCode = 400; 
+        message = MESSAGE_ERROR.REQUIRED_ID
+    }
+
+    //retorna os dados da API
+    response.status(statusCode)
+    response.json(message)
+})
+
+//EnPoint para buscar um contato pelo ID
+app.get('/v1/contato/:opcao', cors(), async function(request, response) {
+    let statusCode
+    let message
+    let opcaoContato = request.params.opcao
+
+    //validação do ID na requisição
+    if (opcaoContato != '' && opcaoContato != undefined) {
+        //retorna os dados do contato existentes no BD
+        const dadosContato = await controllerContato.getContatoByOpcao(idConopcaoContatotato)
 
         //valida se existe retorno de dados
         if (dadosContato) {

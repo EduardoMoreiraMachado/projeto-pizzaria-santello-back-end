@@ -10,6 +10,8 @@ const { MESSAGE_ERROR, MESSAGE_SUCESS } = require('../module/config.js');
 //função para retornsar registros
 const buscarPizza = async function (id) {
 
+    let dadosPizzaJSON = {};
+
     if (id == undefined || id == '') {
 
         return {status: 400, message: MESSAGE_ERROR.REQUIRED_ID};
@@ -18,11 +20,15 @@ const buscarPizza = async function (id) {
 
         const selecionarPizza = require('../model/DAO/pizza.js');
 
-        const result = await selecionarPizza.selectPizza(id);
+        const pizza = await selecionarPizza.selectPizza(id);
+        const ingrediente = await selecionarPizza.selectIngrediente(id)
 
-        if (result) {
+        if (pizza && ingrediente) {
 
-            return {status: 200, message: result};
+            dadosPizzaJSON.pizza = pizza;
+            dadosPizzaJSON.ingrediente = ingrediente
+
+            return {status: 200, message: dadosPizzaJSON};
 
         } else {
 
