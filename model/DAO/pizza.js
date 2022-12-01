@@ -1,7 +1,7 @@
 /***************************************************************************************************
 * Objetivo: arquivo responsável pela manipulação de dados com o BD (insert, update, delete e select)
 * Autor: Eduardo Moreira Machado
-* Data de criação: 30/11/2022
+* Data de criação: 01/12/2022
 * Versão: 1.0
 ***************************************************************************************************/
 
@@ -11,27 +11,118 @@ const { PrismaClient } = require('@prisma/client');
 //instância da classe prismaClient
 const prisma = new PrismaClient();
 
+//função para inserir registros
+const insertPizza = async function (pizza) {
+
+    try {
+
+        let sql = `insert into tbl_produto(
+                                           nome,
+                                           preco,
+                                           foto,
+                                           id_categoria
+                                           )
+                                           values
+                                           (
+                                               '${pizza.nome}',
+                                               '${pizza.preco}',
+                                               '${pizza.foto}',
+                                               '${pizza.id_categoria}'
+                                           )
+                                           ;`
+
+        //executa o script SQL no BD ($executeRawUnsafe() permite encaminhar uma variável contendo o script)
+        const result = await prisma.$executeRawUnsafe(sql);
+
+        if (result) {
+
+            return true;
+
+        } else {
+
+            return false;
+
+        }
+
+    } catch (error) {
+
+        return false;
+
+    }
+
+}
+
+//função para atualizar um registro no BD
+const updatePizza = async function (pizza) {
+
+    try {
+
+        let sql = `update tbl_produto set nome = '${pizza.nome}',
+                                          preco = '${pizza.preco}',
+                                          foto = '${pizza.foto}',
+                                          id_categoria = '${pizza.id_categoria}'
+                                          where id = ${pizza.id};`;
+
+        //executa o script SQL no BD ($executeRawUnsafe() permite encaminhar uma variável contendo o script)
+        const result = await prisma.$executeRawUnsafe(sql);
+
+        if (result) {
+
+            return true;
+
+        } else {
+
+            return false;
+
+        }
+
+    } catch (error) {
+
+        return false;
+        
+    }
+
+}
+
+//função para remover um registro no BD
+const deletePizza = async function (id) {
+
+    let sql = `delete from tbl_pizza where id = ${id};`;
+
+    //executa o script SQL no BD ($executeRawUnsafe() permite encaminhar uma variável contendo o script)
+    const result = await prisma.$executeRawUnsafe(sql);
+
+    if (result) {
+
+        return true;
+
+    } else {
+
+        return false;
+
+    }
+
+}
+
 //função para retornar um registro
 const selectPizza = async function (id) {
 
-    let sql = `select tbl_produto.id as id_produto, tbl_produto.foto, tbl_produto.nome as nome_produto, tbl_produto.preco,
-               tbl_pizza.qntd_favorito, tbl_pizza.desconto,
-               tbl_categoria.id as id_categoria, tbl_categoria.nome as nome_categoria
+    let sql = `select tbl_produto.foto, tbl_produto.nome as nome_produto, tbl_produto.preco,
+               tbl_bebida.peso_liquido,
+               tbl_categoria.nome as nome_categoria
                from tbl_produto
-                   inner join tbl_pizza
-                       on tbl_produto.id = tbl_pizza.id_produto
                    inner join tbl_categoria
                        on tbl_categoria.id = tbl_produto.id_categoria
+                   inner join tbl_bebida
+                       on tbl_produto.id = tbl_bebida.id_produto
                where tbl_produto.id = ${id};`;
 
     //executa o script SQL no BD ($executeRawUnsafe() permite encaminhar uma variável contendo o script)
-    const result = await prisma.$queryRawUnsafe(sql);
-    //result.ingrediente = await prisma.$queryRawUnsafe(sqlIngrediente);
-    console.log(result)
+    const result = await prisma.$executeRawUnsafe(sql);
 
-    if (result.length > 0) {
+    if (result) {
 
-        return result;
+        return true;
 
     } else {
 
@@ -40,41 +131,12 @@ const selectPizza = async function (id) {
     }
 
 }
-
-//função para retornar um registro
-const selectIngrediente = async function (id) {
-
-    let sql = `select tbl_ingrediente.id as id_ingrediente, tbl_ingrediente.nome as nome_ingrediente
-               from tbl_produto
-               inner join tbl_pizza
-                   on tbl_produto.id = tbl_pizza.id_produto
-               inner join tbl_pizza_ingrediente
-                   on tbl_pizza.id = tbl_pizza_ingrediente.id_pizza
-               inner join tbl_ingrediente
-                   on tbl_ingrediente.id = tbl_pizza_ingrediente.id_ingrediente
-               where tbl_produto.id = ${id};`;
-
-    //executa o script SQL no BD ($executeRawUnsafe() permite encaminhar uma variável contendo o script)
-    const result = await prisma.$queryRawUnsafe(sql);
-    //result.ingrediente = await prisma.$executeRawUnsafe(sqlIngrediente);
-    console.log(result)
-
-    if (result.length > 0) {
-
-        return result;
-
-    } else {
-
-        return false;
-
-    }
-
-}
-
 
 module.exports = {
 
+    insertPizza,
+    updatePizza,
+    deletePizza,
     selectPizza,
-    selectIngrediente
 
 }

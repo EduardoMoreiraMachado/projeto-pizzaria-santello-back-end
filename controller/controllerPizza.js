@@ -18,7 +18,7 @@ const buscarPizza = async function (id) {
 
     } else {
 
-        const selecionarPizza = require('../model/DAO/pizza.js');
+        const selecionarPizza = require('../model/DAO/pizza_ingrediente.js');
 
         const pizza = await selecionarPizza.selectPizza(id);
         const ingrediente = await selecionarPizza.selectIngrediente(id)

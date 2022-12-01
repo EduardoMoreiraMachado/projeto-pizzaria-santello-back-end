@@ -501,7 +501,7 @@ app.get('/v1/contato/:id', cors(), async function(request, response) {
 })
 
 //EnPoint para buscar um contato pelo ID
-app.get('/v1/contato/:opcao', cors(), async function(request, response) {
+app.get('/v1/contato-filtrado/:opcao', cors(), async function(request, response) {
     let statusCode
     let message
     let opcaoContato = request.params.opcao
