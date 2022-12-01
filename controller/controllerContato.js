@@ -86,7 +86,7 @@ const getContatoByID = async function(id) {
 
 // Função para retornar apenas os dados de um contato por meio da opcao
 const getContatoByOpcao = async function(opcao) {
-    let opcaoContato = opcao.toLowerCase()
+    let opcaoContato = opcao
     let contatoJSON = {}
 
     //validação para o id como campo obrigatório

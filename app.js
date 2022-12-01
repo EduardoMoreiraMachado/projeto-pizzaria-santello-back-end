@@ -507,9 +507,9 @@ app.get('/v1/contato/:opcao', cors(), async function(request, response) {
     let opcaoContato = request.params.opcao
 
     //validação do ID na requisição
-    if (opcaoContato != '' && opcaoContato != undefined) {
+    if (!(isNaN(opcaoContato)) && opcaoContato != '' && opcaoContato != undefined) {
         //retorna os dados do contato existentes no BD
-        const dadosContato = await controllerContato.getContatoByOpcao(idConopcaoContatotato)
+        const dadosContato = await controllerContato.getContatoByOpcao(opcaoContato)
 
         //valida se existe retorno de dados
         if (dadosContato) {

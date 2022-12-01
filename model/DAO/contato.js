@@ -91,7 +91,7 @@ const selectContatoByOpcao = async function(opcao) {
                                 inner join tbl_opcao
                                 on		   tbl_contato.id_opcao = tbl_opcao.id
                          
-                         where nome_opcao = ${opcaoContato}`
+                         where tbl_contato.id_opcao = ${opcaoContato}`
 
         // Criação de objeto do tipo 'RecordSet' (rsAlunos), para receber os dados do DB, através do script SQL (select)
         const rsContato = await prisma.$queryRawUnsafe(scriptSQL)
