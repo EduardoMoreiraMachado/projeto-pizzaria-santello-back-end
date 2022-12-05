@@ -49,17 +49,21 @@ const buscarPizzas = async function () {
 
     if (pizzas) {
 
-        pizzas.map(async itemPizza => {
+        const pizzaIngrediente = pizzas.map(async itemPizza => {
 
             const selecionarIngredientes = require('../model/DAO/pizza_ingrediente.js');
 
-            const ingredientes = selecionarIngredientes.selectIngrediente(itemPizza.id_produto);
+            const ingredientes = await selecionarIngredientes.selectIngrediente(itemPizza.id_produto);
+
+            console.log(ingredientes)
         
             itemPizza.ingredientes = ingredientes;
 
+            return itemPizza;
+
         });
 
-        return {status: 200, message: pizzas};
+        return {status: 200, message: await Promise.all(pizzaIngrediente)};
 
     } else {
 
@@ -69,7 +73,7 @@ const buscarPizzas = async function () {
 
 }
 
-console.log(buscarPizzas())
+//console.log(buscarPizzas())
 
 module.exports = {
 

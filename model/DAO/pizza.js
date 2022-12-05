@@ -28,8 +28,9 @@ const insertPizza = async function (pizza) {
                                                '${pizza.preco}',
                                                '${pizza.foto}',
                                                '${pizza.id_categoria}'
-                                           )
-                                           ;`
+                                           );
+                                           
+                   insert into tbl_pizza(qntd_favorito, id_produto) values(${pizza.qntd_favorito}, ${pizza.id_produto});`;
 
         //executa o script SQL no BD ($executeRawUnsafe() permite encaminhar uma variável contendo o script)
         const result = await prisma.$executeRawUnsafe(sql);

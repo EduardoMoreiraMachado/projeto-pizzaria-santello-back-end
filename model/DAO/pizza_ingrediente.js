@@ -25,8 +25,6 @@ const selectPizzas = async function () {
 
     //executa o script SQL no BD ($executeRawUnsafe() permite encaminhar uma variável contendo o script)
     const result = await prisma.$queryRawUnsafe(sql);
-    
-    console.log(result)
 
     if (result.length > 0) {
 
@@ -56,8 +54,6 @@ const selectPizza = async function (id) {
     //executa o script SQL no BD ($executeRawUnsafe() permite encaminhar uma variável contendo o script)
     const result = await prisma.$queryRawUnsafe(sql);
     
-    console.log(result)
-
     if (result.length > 0) {
 
         return result;
@@ -86,7 +82,6 @@ const selectIngrediente = async function (id) {
     //executa o script SQL no BD ($executeRawUnsafe() permite encaminhar uma variável contendo o script)
     const result = await prisma.$queryRawUnsafe(sql);
     //result.ingrediente = await prisma.$executeRawUnsafe(sqlIngrediente);
-    console.log(result)
 
     if (result.length > 0) {
 
@@ -103,6 +98,7 @@ const selectIngrediente = async function (id) {
 
 module.exports = {
 
+    selectPizzas,
     selectPizza,
     selectIngrediente
 

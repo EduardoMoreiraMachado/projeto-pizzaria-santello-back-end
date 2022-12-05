@@ -797,6 +797,58 @@ app.delete('/v1/ingrediente/:id', cors(), jsonParser, async function(request, re
 });
 
 
+
+/* * * * * * * * * * * * * * * * * * * * *
+    rotas para CRUD de bebidas (Create, Read, Update e Delete)
+    data: 05/12/2022
+* * * * * * * * * * * * * * * * * * * * */
+
+//EndPoint para inserir uma nova bebida
+app.post('/v1/bebida', cors(), jsonParser, async function(request, response) {
+
+    let statusCode;
+    let message;
+    let headerContentType;
+
+    //recebe o tipo de content-type que foi enviado no header da requisição
+    headerContentType = request.headers['content-type'];
+
+    if (headerContentType == 'application/json') {
+        
+        //recebe do corpo da mensagem o conteúdo
+        let dadosBody = request.body;
+        //realiza um processo de conversão de dados para conseguir comparar o JSON vazio
+        if (JSON.stringify(dadosBody) != '{}') {
+
+            //import do arquivo da controller de bebida
+            const controllerBebida = require('./controller/controllerBebida.js');
+            //chama a função nova bebida da controller e encaminha os dados do body
+            const novaBebida = await controllerBebida.novaBebida(dadosBody);
+
+            statusCode = novaBebida.status;
+            message = novaBebida.message;    
+
+        } else {
+
+            statusCode = 400;
+            message = MESSAGE_ERROR.EMPTY_BODY;
+
+        }
+
+    } else {
+
+        statusCode = 415;
+        message = MESSAGE_ERROR.CONTENT_TYPE;
+
+    }
+
+    response.status(statusCode);
+    response.json(message);
+
+});
+
+
+
 /* * * * * * * * * * * * * * * * * * * * *
     rotas para CRUD de pizzas (Create, Read, Update e Delete)
     data: 30/11/2022
@@ -827,6 +879,38 @@ app.get('/v1/pizza/:id', cors(), async function(request, response) {
 
     response.status(statusCode);
     response.json(message);
+
+});
+
+app.get('/v1/pizzas', cors(), async function(request, response) {
+
+    let statusCode;
+    let message;
+
+    //import do arquivo controllerIngrediente
+    const controllerPizza = require('./controller/controllerPizza.js');
+
+    //retorna todos os servicos existentes no BD
+    const dadosPizzas = await controllerPizza.buscarPizzas();
+
+    //valida se existe retorno de dados
+    if (dadosPizzas) {
+
+        //status 200
+        statusCode = dadosPizzas.status;
+        message = dadosPizzas.message;
+
+    } else {
+
+        //status 404
+        statusCode = 404;
+        message = MESSAGE_ERROR.NOT_FOUND_DB;
+
+    }
+
+    //retorna os dados da API
+    response.status(statusCode);
+    response.json(message);    
 
 });
 

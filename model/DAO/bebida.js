@@ -28,8 +28,9 @@ const insertBebida = async function (bebida) {
                                                '${bebida.preco}',
                                                '${bebida.foto}',
                                                '${bebida.id_categoria}'
-                                           )
-                                           ;`
+                                           );
+
+                   insert into tbl_bebida(peso_liquido, id_produto) values(${bebida.peso_liquido}, ${bebida.id_produto});`;
 
         //executa o script SQL no BD ($executeRawUnsafe() permite encaminhar uma variável contendo o script)
         const result = await prisma.$executeRawUnsafe(sql);
