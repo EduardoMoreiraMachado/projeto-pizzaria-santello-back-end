@@ -7,7 +7,7 @@
 
 const { MESSAGE_ERROR, MESSAGE_SUCESS } = require('../module/config.js');
 
-//função para retornsar registros
+//função para retornar um registro
 const buscarPizza = async function (id) {
 
     let dadosPizzaJSON = {};
@@ -40,8 +40,40 @@ const buscarPizza = async function (id) {
 
 }
 
+//função para retornar todos os registros
+const buscarPizzas = async function () {
+
+    const selecionarPizzas = require('../model/DAO/pizza_ingrediente.js');
+
+    const pizzas = await selecionarPizzas.selectPizzas();
+
+    if (pizzas) {
+
+        pizzas.map(async itemPizza => {
+
+            const selecionarIngredientes = require('../model/DAO/pizza_ingrediente.js');
+
+            const ingredientes = selecionarIngredientes.selectIngrediente(itemPizza.id_produto);
+        
+            itemPizza.ingredientes = ingredientes;
+
+        });
+
+        return {status: 200, message: pizzas};
+
+    } else {
+
+        return {status: 500, message: MESSAGE_ERROR.INTERNAL_ERROR_DB};
+
+    }
+
+}
+
+console.log(buscarPizzas())
+
 module.exports = {
 
+    buscarPizzas,
     buscarPizza
 
 }
