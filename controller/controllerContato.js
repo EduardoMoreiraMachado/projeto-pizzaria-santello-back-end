@@ -94,7 +94,7 @@ const getContatoByOpcao = async function(opcao) {
         return {status: 400, message: MESSAGE_ERROR.REQUIRED_ID};
 
     else {
-        const dadosContato = modelContato.selectContatoByOpcao(opcaoContato)
+        const dadosContato = modelContato.selectContatosByOpcao(opcaoContato)
 
         if(dadosContato) {
             contatoJSON.statusCode = 200

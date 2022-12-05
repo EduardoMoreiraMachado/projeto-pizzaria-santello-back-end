@@ -55,8 +55,8 @@ const selectContatoByID = async function(id) {
     try {
         let idContato = id
 
-        let scriptSQL = `select tbl_contato.nome as nome_contato, tbl_contato.email, tbl_contato.telefone, tbl_contato.celular, tbl_contato.mensagem,
-                                tbl_opcao.nome as nome_opcao
+        let scriptSQL = `select tbl_contato.id as id_contato, tbl_contato.nome as nome_contato, tbl_contato.email, tbl_contato.telefone, tbl_contato.celular, tbl_contato.mensagem,
+                                tbl_opcao.id as id_opcao, tbl_opcao.nome as nome_opcao
 
                          from   tbl_contato
                                 inner join tbl_opcao
@@ -80,12 +80,12 @@ const selectContatoByID = async function(id) {
 }
 
 // Função para consultar uma mensagem no banco de dados
-const selectContatoByOpcao = async function(opcao) {
+const selectContatosByOpcao = async function(opcao) {
     try {
         let opcaoContato = opcao
 
-        let scriptSQL = `select tbl_contato.nome as nome_contato, tbl_contato.email, tbl_contato.telefone, tbl_contato.celular, tbl_contato.mensagem,
-                                tbl_opcao.nome as nome_opcao
+        let scriptSQL = `select tbl_contato.id as id_contato, tbl_contato.nome as nome_contato, tbl_contato.email, tbl_contato.telefone, tbl_contato.celular, tbl_contato.mensagem,
+                                tbl_opcao.id as id_opcao, tbl_opcao.nome as nome_opcao
 
                          from   tbl_contato
                                 inner join tbl_opcao
@@ -111,8 +111,8 @@ const selectContatoByOpcao = async function(opcao) {
 // Função para consultar todas as mensagens do banco de dados
 const selectAllContatos = async function() {
     try {
-        let scriptSQL = `select tbl_contato.nome as nome_contato, tbl_contato.email, tbl_contato.telefone, tbl_contato.celular, tbl_contato.mensagem,
-                                tbl_opcao.nome as nome_opcao
+        let scriptSQL = `select tbl_contato.id as id_contato, tbl_contato.nome as nome_contato, tbl_contato.email, tbl_contato.telefone, tbl_contato.celular, tbl_contato.mensagem,
+                                tbl_opcao.id as id_opcao, tbl_opcao.nome as nome_opcao
 
                          from   tbl_contato
                                 inner join tbl_opcao
@@ -140,5 +140,5 @@ module.exports = {
     insertContato,
     selectContatoByID,
     selectAllContatos,
-    selectContatoByOpcao
+    selectContatosByOpcao
 }

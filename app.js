@@ -501,7 +501,7 @@ app.get('/v1/contato/:id', cors(), async function(request, response) {
 })
 
 //EnPoint para buscar um contato pelo ID
-app.get('/v1/contato-filtrado/:opcao', cors(), async function(request, response) {
+app.get('/v1/contatos/filtro/:opcao', cors(), async function(request, response) {
     let statusCode
     let message
     let opcaoContato = request.params.opcao
@@ -514,8 +514,8 @@ app.get('/v1/contato-filtrado/:opcao', cors(), async function(request, response)
         //valida se existe retorno de dados
         if (dadosContato) {
             //status 200
-            statusCode = dadosContato.statusCode
-            message = dadosContato.message
+            statusCode = await dadosContato.statusCode
+            message = await dadosContato.message
 
         } else {
             //status 404
