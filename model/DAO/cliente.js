@@ -57,7 +57,7 @@ const updateCliente = async function (cliente) {
 
         let sql = `update tbl_adm set nome = '${cliente.nome}',
                                       email = '${cliente.email}',
-                                      senha = md5('${cliente.senha})'
+                                      senha = md5('${cliente.senha}')
                                       where id = ${cliente.id};`;
 
         //executa o script SQL no BD ($executeRawUnsafe() permite encaminhar uma variável contendo o script)
