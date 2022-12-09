@@ -16,10 +16,11 @@ const insertBebida = async function (bebida) {
 
     try {
 
-        let sql = `insert into tbl_produto(
+        let insertProduto = `insert into tbl_produto(
                                            nome,
                                            preco,
                                            foto,
+                                           codigo_tipo,
                                            id_categoria
                                            )
                                            values
@@ -27,17 +28,38 @@ const insertBebida = async function (bebida) {
                                                '${bebida.nome}',
                                                '${bebida.preco}',
                                                '${bebida.foto}',
+                                               2,
                                                '${bebida.id_categoria}'
-                                           );
-
-                   insert into tbl_bebida(peso_liquido, id_produto) values(${bebida.peso_liquido}, ${bebida.id_produto});`;
+                                           )`;
 
         //executa o script SQL no BD ($executeRawUnsafe() permite encaminhar uma variável contendo o script)
-        const result = await prisma.$executeRawUnsafe(sql);
+        const resultProduto = await prisma.$executeRawUnsafe(insertProduto);
 
-        if (result) {
+        if (resultProduto) {
+            let selectLastID = `select id from tbl_bebida order by id desc limit 1`
 
-            return true;
+                const resultSelect = await prisma.$queryRawUnsafe(selectLastID)
+                console.log(resultSelect)
+
+                if(resultSelect.length > 0) {
+                    let updateBebida = `update tbl_bebida set peso_liquido = ${bebida.peso_liquido} where id = ${resultSelect[0].id}`
+
+                    //executa o script SQL no BD ($executeRawUnsafe() permite encaminhar uma variável contendo o script)
+                    const resultBebida = await prisma.$executeRawUnsafe(updateBebida);
+
+                    console.log(resultBebida)
+                    if (resultBebida) {
+                        return true;
+                    }
+
+                    else {
+                        return false
+                    }
+                }
+
+                else {
+                    return false
+                }
 
         } else {
 

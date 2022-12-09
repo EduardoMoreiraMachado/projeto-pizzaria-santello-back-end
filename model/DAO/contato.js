@@ -37,7 +37,7 @@ const insertContato = async function(contato) {
                                                 
         //execura o script SQL no BD ($executeRawUnsafe() permite encaminhar uma variável contendo o script)
         const result = await prisma.$executeRawUnsafe(scriptSQL)
-
+        
         if (result)
             return true
         
@@ -46,6 +46,7 @@ const insertContato = async function(contato) {
     }
 
     catch (error) {
+        
         return false
     }
 }

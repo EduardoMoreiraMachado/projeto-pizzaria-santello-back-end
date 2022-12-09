@@ -916,7 +916,7 @@ app.get('/v1/pizzas', cors(), async function(request, response) {
 
 
 //ativa o servidor para receber requisições HTTP
-app.listen(8080, function() {
+app.listen(1234, function() {
 
     console.log('Servidor aguardando requisições...');
 
