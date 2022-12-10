@@ -104,6 +104,8 @@ const excluirBebida = async function (id) {
 
 }
 
+
+
 //função para retornar todos os registros
 const listarBebidas = async function () {
 

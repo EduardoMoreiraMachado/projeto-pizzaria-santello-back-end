@@ -121,6 +121,34 @@ const deleteBebida = async function (id) {
 }
 
 //função para retornar um registro
+const buscarBebida = async function (id) {
+
+    if (id == undefined || id == '') {
+
+        return {status: 400, message: MESSAGE_ERROR.REQUIRED_ID};
+
+    } else {
+
+        const selecionarBebida = require('../model/DAO/bebida.js');
+
+        const bebida = await selecionarBebida.selectBebida(id);
+
+        if (bebida) {
+
+            return {status: 200, message: bebida};
+
+        } else {
+
+            return {status: 500, message: MESSAGE_ERROR.INTERNAL_ERROR_DB};
+
+        }
+
+    }
+
+}
+
+
+//função para retornar um registro
 const selectBebida = async function (id) {
 
     let sql = `select tbl_produto.id as id_produto, tbl_produto.foto, tbl_produto.nome as nome_produto, tbl_produto.preco,
