@@ -136,7 +136,7 @@ const deletePizza = async function (id) {
 const selectPizza = async function (id) {
 
     let sql = `select tbl_produto.foto, tbl_produto.nome as nome_produto, tbl_produto.preco,
-               tbl_pizza.desconto, tbl_pizza.qntd_favorito, tbl_pizza.ingredientes,
+               tbl_pizza.id as id_pizza, tbl_pizza.desconto, tbl_pizza.qntd_favorito, tbl_pizza.ingredientes,
                tbl_categoria.nome as nome_categoria
                from tbl_produto
                    inner join tbl_categoria
@@ -163,7 +163,7 @@ const selectPizza = async function (id) {
 const selectPizzas = async function () {
 
     let sql = `select tbl_produto.id as id_produto, tbl_produto.foto, tbl_produto.nome as nome_produto, tbl_produto.preco,
-               tbl_pizza.desconto, tbl_pizza.qntd_favorito, tbl_pizza.ingredientes,
+               tbl_pizza.id as id_pizza, tbl_pizza.desconto, tbl_pizza.qntd_favorito, tbl_pizza.ingredientes,
                tbl_categoria.id as id_categoria, tbl_categoria.nome as nome_categoria
                from tbl_produto
                    inner join tbl_pizza
@@ -190,18 +190,18 @@ const selectPizzas = async function () {
 const selectDiscountPizzas = async function () {
 
     let sql = `select tbl_produto.id as id_produto, tbl_produto.foto, tbl_produto.nome as nome_produto, tbl_produto.preco,
-               tbl_pizza.desconto, tbl_pizza.qntd_favorito, tbl_pizza.ingredientes,
+               tbl_pizza.id as id_pizza, tbl_pizza.desconto, tbl_pizza.qntd_favorito, tbl_pizza.ingredientes,
                tbl_categoria.id as id_categoria, tbl_categoria.nome as nome_categoria
                from tbl_produto
                    inner join tbl_pizza
                        on tbl_produto.id = tbl_pizza.id_produto
                    inner join tbl_categoria
                        on tbl_categoria.id = tbl_produto.id_categoria
-               where tbl_pizza.desconto not null;`;
+               where tbl_pizza.desconto != null;`;
 
     //executa o script SQL no BD ($executeRawUnsafe() permite encaminhar uma variável contendo o script)
     const result = await prisma.$queryRawUnsafe(sql);
-    
+    console.log(result)
     if (result.length > 0) {
 
         return result;
@@ -217,7 +217,7 @@ const selectDiscountPizzas = async function () {
 const selectFavoritePizzas = async function () {
 
     let sql = `select tbl_produto.id as id_produto, tbl_produto.foto, tbl_produto.nome as nome_produto, tbl_produto.preco,
-               tbl_pizza.desconto, tbl_pizza.qntd_favorito, tbl_pizza.ingredientes,
+               tbl_pizza.id as id_pizza, tbl_pizza.desconto, tbl_pizza.qntd_favorito, tbl_pizza.ingredientes,
                tbl_categoria.id as id_categoria, tbl_categoria.nome as nome_categoria
                from tbl_produto
                    inner join tbl_pizza
