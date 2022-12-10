@@ -848,6 +848,65 @@ app.post('/v1/bebida', cors(), jsonParser, async function(request, response) {
 });
 
 
+//EndPoint para atualizar registros de uma bebida 
+app.put('/v1/bebida/:id', cors(), jsonParser, async function(request, response) {
+
+    let statusCode;
+    let message;
+    let headerContentType;
+
+    //recebe o tipo de content-type que foi enviado no header da requisição
+    headerContentType = request.headers['content-type'];
+
+    if (headerContentType == 'application/json') {
+        
+        //recebe do corpo da mensagem o conteúdo
+        let dadosBody = request.body;
+
+        //realiza um processo de conversão de dados para conseguir comparar o JSON vazio
+        if (JSON.stringify(dadosBody) != '{}') {
+            
+            //recebe o id enviado por parâmetro na requisição
+            let id = request.params.id;
+
+            //validação do ID na requisição
+            if (id != '' && id != undefined) {
+
+                //adiciona o id no JSON que chegou do corpo da requisição
+                dadosBody.id_bebida = id;
+                //import do arquivo da controller de serviço
+                const controllerBebida = require('./controller/controllerBebida.js');
+                //chama a função para atualizar um aluno da controller e encaminha os dados do body
+                const atualizarBebida = await controllerBebida.atualizarBebida(dadosBody);
+
+                statusCode = atualizarBebida.status;
+                message = atualizarBebida.message; 
+
+            } else {
+
+                statusCode = 400; 
+                message = MESSAGE_ERROR.REQUIRED_ID
+
+            }
+
+        } else {
+
+            statusCode = 400;
+            message = MESSAGE_ERROR.EMPTY_BODY;
+
+        }
+
+    } else {
+
+        statusCode = 415;
+        message = MESSAGE_ERROR.CONTENT_TYPE;
+
+    }
+
+    response.status(statusCode);
+    response.json(message);
+
+});
 
 /* * * * * * * * * * * * * * * * * * * * *
     rotas para CRUD de pizzas (Create, Read, Update e Delete)

@@ -37,6 +37,47 @@ const novaBebida = async function (bebida) {
 
 }
 
+//função para atualizar um registro
+const atualizarBebida = async function (bebida) {
+
+    console.log(bebida)
+
+    //validação para o id como campo obrigatório
+    if (bebida.id_bebida == undefined || bebida.id_bebida == ''  || bebida.id_categoria == undefined || bebida.id_categoria == '' ||
+        bebida.id_produto == undefined || bebida.id_produto == '') {
+
+        return {status: 400, message: MESSAGE_ERROR.REQUIRED_ID};
+
+    }
+
+    //validação de campos obrigatórios
+    if (bebida.nome == undefined || bebida.preco == undefined || bebida.foto == undefined || bebida.peso_liquido == undefined ||
+        bebida.nome == '' || isNaN(bebida.preco) || bebida.foto == '' || bebida.peso_liquido == '') {
+
+        return {status: 400, message: MESSAGE_ERROR.REQUIRED_FIELDS};
+
+    } else {
+
+        //import da model de cliente
+        const atualizarBebida = require('../model/DAO/bebida.js');
+        //chaa a função para atualizar um cliente 
+        const result = await atualizarBebida.updateBebida(bebida)
+
+        if (result) {
+
+            return {status: 201, message: MESSAGE_SUCESS.UPDATE_ITEM};
+
+        } else {
+
+            return {status: 500, message:MESSAGE_ERROR.INTERNAL_ERROR_DB};
+
+        }
+
+    }
+
+}
+
+
 //função para excluir um registro
 const excluirIngrediente = async function (id) {
 
@@ -91,6 +132,7 @@ module.exports = {
 
     novaBebida,
     excluirIngrediente,
-    listarIngredientes
+    listarIngredientes,
+    atualizarBebida
 
 }

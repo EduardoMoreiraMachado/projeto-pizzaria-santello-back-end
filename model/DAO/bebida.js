@@ -26,7 +26,7 @@ const insertBebida = async function (bebida) {
                                            values
                                            (
                                                '${bebida.nome}',
-                                               '${bebida.preco}',
+                                               ${bebida.preco},
                                                '${bebida.foto}',
                                                2,
                                                '${bebida.id_categoria}'
@@ -47,7 +47,6 @@ const insertBebida = async function (bebida) {
                     //executa o script SQL no BD ($executeRawUnsafe() permite encaminhar uma variável contendo o script)
                     const resultBebida = await prisma.$executeRawUnsafe(updateBebida);
 
-                    console.log(resultBebida)
                     if (resultBebida) {
                         return true;
                     }
@@ -77,21 +76,33 @@ const insertBebida = async function (bebida) {
 
 //função para atualizar um registro no BD
 const updateBebida = async function (bebida) {
+    console.log(bebida)
 
     try {
 
-        let sql = `update tbl_produto set nome = '${bebida.nome}',
-                                          preco = '${bebida.preco}',
+        let updateProduto = `update tbl_produto set nome = '${bebida.nome}',
+                                          preco = ${bebida.preco},
                                           foto = '${bebida.foto}',
-                                          id_categoria = '${bebida.id_categoria}'
-                                          where id = ${bebida.id};`;
+                                          id_categoria = ${bebida.id_categoria}
+                                          where id = ${bebida.id_produto};`;
 
         //executa o script SQL no BD ($executeRawUnsafe() permite encaminhar uma variável contendo o script)
-        const result = await prisma.$executeRawUnsafe(sql);
+        const resultUpdateProduto = await prisma.$executeRawUnsafe(updateProduto);
+        console.log(resultUpdateProduto + 'produto')
 
-        if (result) {
+        if (resultUpdateProduto > 0) {
+            let sqlupdateBebida = `update tbl_bebida set peso_liquido = ${bebida.peso_liquido} where id = ${id_bebida}`
 
-            return true;
+            const resultUpdateBebida = await prisma.$executeRawUnsafe(sqlupdateBebida)
+            console.log(resultUpdateBebida + 'bebida')
+            
+            if (resultUpdateBebida) {
+                return true
+            }
+
+            else {
+                return false
+            }
 
         } else {
 
@@ -100,7 +111,6 @@ const updateBebida = async function (bebida) {
         }
 
     } catch (error) {
-
         return false;
         
     }
@@ -130,8 +140,8 @@ const deleteBebida = async function (id) {
 //função para retornar um registro
 const selectBebida = async function (id) {
 
-    let sql = `select tbl_produto.foto, tbl_produto.nome as nome_produto, tbl_produto.preco,
-               tbl_bebida.peso_liquido,
+    let sql = `select tbl_produto.id as id_produto, tbl_produto.foto, tbl_produto.nome as nome_produto, tbl_produto.preco,
+               tbl_bebida.peso_liquido, tbl_bebida.id as id_bebida,
                tbl_categoria.nome as nome_categoria
                from tbl_produto
                    inner join tbl_categoria
@@ -141,11 +151,11 @@ const selectBebida = async function (id) {
                where tbl_produto.id = ${id};`;
 
     //executa o script SQL no BD ($executeRawUnsafe() permite encaminhar uma variável contendo o script)
-    const result = await prisma.$executeRawUnsafe(sql);
+    const result = await prisma.$queryRawUnsafe(sql);
 
-    if (result) {
+    if (result.length > 0) {
 
-        return true;
+        return result;
 
     } else {
 
@@ -161,7 +171,7 @@ const selectAllBebidas = async function () {
     try {
 
         let sql = `select tbl_produto.id as id_produto, tbl_produto.nome, tbl_produto.preco, tbl_produto.foto, tbl_produto.id_categoria as id_categoria,
-                   tbl_bebida.peso_liquido,
+                   tbl_bebida.peso_liquido, tbl_bebida.id as id_bebida,
                    tbl_categoria.nome as nome_categoria
                    from tbl_produto
                        inner join tbl_categoria
