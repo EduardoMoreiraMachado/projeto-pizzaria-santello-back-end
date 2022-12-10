@@ -194,7 +194,13 @@ const selectDiscountPizzas = async function () {
 
     //executa o script SQL no BD ($executeRawUnsafe() permite encaminhar uma variável contendo o script)
     const result = await prisma.$queryRawUnsafe(sql);
-    console.log(result)
+           
+    result.forEach(element => {
+
+        element.preco_descontado = element.preco - ((element.desconto * element.preco) / 100);
+
+    });
+
     if (result.length > 0) {
 
         return result;
