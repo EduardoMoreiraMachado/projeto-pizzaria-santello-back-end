@@ -76,41 +76,59 @@ const insertBebida = async function (bebida) {
 
 //função para atualizar um registro no BD
 const updateBebida = async function (bebida) {
-    console.log(bebida)
 
     try {
+        let sqlUpdate = `CALL update_produto_bebida(${bebida.id_produto}, ${bebida.nome}, ${bebida.preco}, ${bebida.foto}, ${bebida.id_categoria}
+                                                    ${bebida.id_bebida}, ${bebida.peso_liquido});`
 
-        let updateProduto = `update tbl_produto set nome = '${bebida.nome}',
-                                          preco = ${bebida.preco},
-                                          foto = '${bebida.foto}',
-                                          id_categoria = ${bebida.id_categoria}
-                                          where id = ${bebida.id_produto};`;
-
-        //executa o script SQL no BD ($executeRawUnsafe() permite encaminhar uma variável contendo o script)
-        const resultUpdateProduto = await prisma.$executeRawUnsafe(updateProduto);
-        console.log(resultUpdateProduto + 'produto')
-
-        if (resultUpdateProduto > 0) {
-            let sqlupdateBebida = `update tbl_bebida set peso_liquido = ${bebida.peso_liquido} where id = ${id_bebida}`
-
-            const resultUpdateBebida = await prisma.$executeRawUnsafe(sqlupdateBebida)
-            console.log(resultUpdateBebida + 'bebida')
+        const result = await prisma.$executeRawUnsafe(sqlUpdate);
+        console.log(result)
             
-            if (resultUpdateBebida) {
-                return true
-            }
-
-            else {
-                return false
-            }
-
-        } else {
-
-            return false;
-
+        if (result) {
+            return true
         }
 
-    } catch (error) {
+        else {
+            return false
+        }
+    }
+
+    // console.log(bebida)
+
+    // try {
+
+    //     let updateProduto = `update tbl_produto set nome = '${bebida.nome}',
+    //                                       preco = ${bebida.preco},
+    //                                       foto = '${bebida.foto}',
+    //                                       id_categoria = ${bebida.id_categoria}
+    //                                       where id = ${bebida.id_produto};`;
+
+    //     //executa o script SQL no BD ($executeRawUnsafe() permite encaminhar uma variável contendo o script)
+    //     const resultUpdateProduto = await prisma.$executeRawUnsafe(updateProduto);
+    //     console.log(resultUpdateProduto + 'produto')
+
+    //     if (resultUpdateProduto > 0) {
+    //         let sqlupdateBebida = `update tbl_bebida set peso_liquido = ${bebida.peso_liquido} where id = ${id_bebida}`
+
+    //         const resultUpdateBebida = await prisma.$executeRawUnsafe(sqlupdateBebida)
+    //         console.log(resultUpdateBebida + 'bebida')
+            
+    //         if (resultUpdateBebida) {
+    //             return true
+    //         }
+
+    //         else {
+    //             return false
+    //         }
+
+    //     } else {
+
+    //         return false;
+
+    //     }
+
+    catch (error) {
+        console.log('teste')
         return false;
         
     }
