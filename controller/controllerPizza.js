@@ -11,8 +11,8 @@ const { MESSAGE_ERROR, MESSAGE_SUCESS } = require('../module/config.js');
 const novaPizza = async function (pizza) {
 
     //validação de campos obrigatórios
-    if (pizza.nome == undefined || pizza.preco == undefined || pizza.foto == undefined || pizza.codigo_tipo == undefined || pizza.id_categoria == undefined || pizza.qntd_favorito == undefined || pizza.ingredientes == undefined || 
-        pizza.nome == '' || pizza.preco == '' || pizza.foto == '' || pizza.codigo_tipo == '' || pizza.id_categoria == '' || pizza.qntd_favorito == '' || pizza.ingredientes == '') {
+    if (pizza.nome == undefined || pizza.preco == undefined || pizza.foto == undefined || pizza.id_categoria == undefined || pizza.qntd_favorito == undefined || pizza.ingredientes == undefined || 
+        pizza.nome == '' || pizza.preco == '' || pizza.foto == '' || pizza.id_categoria == '' || pizza.qntd_favorito == '' || pizza.ingredientes == '') {
 
         return {status: 400, message: MESSAGE_ERROR.REQUIRED_FIELDS};
 
