@@ -884,6 +884,36 @@ app.put('/v1/bebida/:id', cors(), jsonParser, async function(request, response) 
 
 });
 
+//EndPoint para buscar uma bebida por categoria
+app.get('/v1/bebidaCategoria/:id', cors(), async function(request, response) {
+
+    //recebe o id enviado por parâmetro na requisição
+    let id = request.params.id;
+    let statusCode;
+    let message;
+
+    if (id != '' && id != undefined) {
+        //import do arquivo controllerBebida
+        const controllerBebida = require('./controller/controllerBebida.js');
+
+        const selecionarBebida = await controllerBebida.listarBebidasCategoria(id);
+
+        statusCode = selecionarBebida.status;
+        message = selecionarBebida.message;
+
+    } else {
+        
+        statusCode = 400;
+        message = MESSAGE_ERROR.REQUIRED_ID;
+
+    }
+
+    response.status(statusCode);
+    response.json(message);
+
+});
+
+
 /* * * * * * * * * * * * * * * * * * * * *
     rotas para CRUD de pizzas (Create, Read, Update e Delete)
     data: 09/12/2022
@@ -1141,6 +1171,35 @@ app.put('/v1/pizza/:id', cors(), jsonParser, async function(request, response) {
 
         statusCode = 415;
         message = MESSAGE_ERROR.CONTENT_TYPE;
+
+    }
+
+    response.status(statusCode);
+    response.json(message);
+
+});
+
+//EndPoint para buscar uma pizza por categoria
+app.get('/v1/pizzaCategoria/:id', cors(), async function(request, response) {
+
+    //recebe o id enviado por parâmetro na requisição
+    let id = request.params.id;
+    let statusCode;
+    let message;
+
+    if (id != '' && id != undefined) {
+        //import do arquivo controllerPizza
+        const controllerPizza = require('./controller/controllerPizza.js');
+
+        const selecionarPizza = await controllerPizza.buscarPizzasCategoria(id);
+
+        statusCode = selecionarPizza.status;
+        message = selecionarPizza.message;
+
+    } else {
+        
+        statusCode = 400;
+        message = MESSAGE_ERROR.REQUIRED_ID;
 
     }
 

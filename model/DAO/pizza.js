@@ -234,6 +234,32 @@ const selectFavoritePizzas = async function () {
 
 }
 
+const selectCategoryPizza = async function (id) {
+
+    let sql = `select tbl_produto.id as id_produto, tbl_produto.foto, tbl_produto.nome as nome_produto, tbl_produto.preco,
+    tbl_pizza.id as id_pizza, tbl_pizza.desconto, tbl_pizza.qntd_favorito, tbl_pizza.ingredientes,
+    tbl_categoria.id as id_categoria, tbl_categoria.nome as nome_categoria
+    from tbl_produto
+        inner join tbl_pizza
+            on tbl_produto.id = tbl_pizza.id_produto
+            inner join tbl_categoria
+            on tbl_categoria.id = tbl_produto.id_categoria
+    where tbl_produto.id_categoria = ${id};`;
+
+    //executa o script SQL no BD ($executeRawUnsafe() permite encaminhar uma variável contendo o script)
+    const result = await prisma.$queryRawUnsafe(sql);
+
+    if (result.length > 0) {
+
+        return result;
+
+    } else {
+
+        return false;
+
+    }
+
+}
 
 module.exports = {
 
@@ -243,6 +269,7 @@ module.exports = {
     selectPizza,
     selectPizzas,
     selectDiscountPizzas,
-    selectFavoritePizzas
+    selectFavoritePizzas,
+    selectCategoryPizza
 
 }

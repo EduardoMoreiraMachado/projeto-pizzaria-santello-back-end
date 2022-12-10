@@ -181,12 +181,47 @@ const selectAllBebidas = async function () {
     }
 }
 
+//funçao para retornar uma bebida por categoria
+const selectCategoryBebidas = async function (id) {
+
+    try {
+
+        let sql = `select tbl_produto.id as id_produto, tbl_produto.nome, tbl_produto.preco, tbl_produto.foto, tbl_produto.id_categoria as id_categoria,
+                   tbl_bebida.peso_liquido, tbl_bebida.id as id_bebida,
+                   tbl_categoria.nome as nome_categoria
+                   from tbl_produto
+                       inner join tbl_categoria
+                           on tbl_categoria.id = tbl_produto.id_categoria
+                       inner join tbl_bebida
+                           on tbl_produto.id = tbl_bebida.id_produto
+                    where tbl_produto.id_categoria = ${id};`;
+                        
+        const rsBebidas = await prisma.$queryRawUnsafe(sql);
+
+        if (rsBebidas.length > 0) {
+
+            return rsBebidas;
+
+        } else {
+
+            return false;
+
+        }
+
+    } catch (error) {
+
+        return false;   
+
+    }
+}
+
 module.exports = {
 
     insertBebida,
     updateBebida,
     deleteBebida,
     selectBebida,
-    selectAllBebidas
+    selectAllBebidas,
+    selectCategoryBebidas
 
 }

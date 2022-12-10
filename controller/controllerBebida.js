@@ -112,7 +112,29 @@ const listarBebidas = async function () {
     const todasBebidas = require('../model/DAO/bebida.js');
 
     const dadosBebidas = await todasBebidas.selectAllBebidas();
-    console.log(dadosBebidas)
+
+    if (dadosBebidas) {
+
+        dadosBebidasJSON.status = 200
+        dadosBebidasJSON.message = dadosBebidas;
+        return dadosBebidasJSON;
+
+    } else {
+
+        return false;
+
+    }
+
+}
+
+//função para retornar todos os registros
+const listarBebidasCategoria = async function (id) {
+
+    let dadosBebidasJSON = {};
+
+    const bebidasCategoria = require('../model/DAO/bebida.js');
+
+    const dadosBebidas = await bebidasCategoria.selectCategoryBebidas(id);
 
     if (dadosBebidas) {
 
@@ -133,6 +155,7 @@ module.exports = {
     novaBebida,
     excluirBebida,
     listarBebidas,
-    atualizarBebida
+    atualizarBebida,
+    listarBebidasCategoria
 
 }

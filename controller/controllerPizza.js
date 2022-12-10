@@ -187,6 +187,25 @@ const atualizarPizza = async function (pizza) {
 
 }
 
+//função para retornar todos os registros
+const buscarPizzasCategoria = async function (id) {
+
+    const selecionarPizzas = require('../model/DAO/pizza.js');
+
+    const pizzas = await selecionarPizzas.selectCategoryPizzas(id);
+
+    if (pizzas) {
+
+        return {status: 200, message: pizzas};
+
+    } else {
+
+        return {status: 500, message: MESSAGE_ERROR.INTERNAL_ERROR_DB};
+
+    }
+
+}
+
 module.exports = {
 
     novaPizza,
@@ -195,6 +214,7 @@ module.exports = {
     buscarPizza,
     buscarPizzasDesconto,
     buscarPizzasFavoritas,
-    atualizarPizza
+    atualizarPizza,
+    buscarPizzasCategoria
 
 }
