@@ -222,7 +222,7 @@ const selectFavoritePizzas = async function () {
                from tbl_produto
                    inner join tbl_pizza
                        on tbl_produto.id = tbl_pizza.id_produto
-                   inner join tbl_categoria
+                       inner join tbl_categoria
                        on tbl_categoria.id = tbl_produto.id_categoria
                order by tbl_pizza.qntd_desconto desc limit 6;`;
 

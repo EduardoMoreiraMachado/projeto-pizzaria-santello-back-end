@@ -79,7 +79,7 @@ const atualizarBebida = async function (bebida) {
 
 
 //função para excluir um registro
-const excluirIngrediente = async function (id) {
+const excluirBebida = async function (id) {
 
     //validação para o id como campo obrigatório
     if (id == undefined || id == '') {
@@ -88,9 +88,9 @@ const excluirIngrediente = async function (id) {
 
     } else {
 
-        const removerIngrediente = require('../model/DAO/ingrediente.js');
+        const removerBebida = require('../model/DAO/bebida.js');
 
-        const result = await removerIngrediente.deleteIngrediente(id);
+        const result = await removerBebida.deleteBebida(id);
 
         if (result) {
 
@@ -107,18 +107,18 @@ const excluirIngrediente = async function (id) {
 }
 
 //função para retornar todos os registros
-const listarIngredientes = async function () {
+const listarBebidas = async function () {
 
-    let dadosIngredientesJSON = {};
+    let dadosBebidasJSON = {};
 
-    const { selectAllIngredientes } = require('../model/DAO/ingrediente.js');
+    const { selectAllBebidas } = require('../model/DAO/bebida.js');
 
-    const dadosIngredientes = await selectAllIngredientes();
+    const dadosBebidas = await selectAllBebidas();
 
-    if (dadosIngredientes) {
+    if (dadosBebidas) {
 
-        dadosIngredientesJSON.ingredientes = dadosIngredientes;
-        return dadosIngredientesJSON;
+        dadosBebidasJSON.bebidas = dadosBebidas;
+        return dadosBebidasJSON;
 
     } else {
 
@@ -131,8 +131,8 @@ const listarIngredientes = async function () {
 module.exports = {
 
     novaBebida,
-    excluirIngrediente,
-    listarIngredientes,
+    excluirBebida,
+    listarBebidas,
     atualizarBebida
 
 }

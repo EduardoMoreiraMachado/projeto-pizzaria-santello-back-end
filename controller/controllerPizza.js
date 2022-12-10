@@ -7,6 +7,64 @@
 
 const { MESSAGE_ERROR, MESSAGE_SUCESS } = require('../module/config.js');
 
+//função para gerar um novo registro
+const novaPizza = async function (pizza) {
+
+    //validação de campos obrigatórios
+    if (pizza.nome == undefined || pizza.preco == undefined || pizza.foto == undefined || pizza.codigo_tipo == undefined || pizza.id_categoria == undefined || pizza.qntd_favorito == undefined || pizza.ingredientes == undefined || 
+        pizza.nome == '' || pizza.preco == '' || pizza.foto == '' || pizza.codigo_tipo == '' || pizza.id_categoria == '' || pizza.qntd_favorito == '' || pizza.ingredientes == '') {
+
+        return {status: 400, message: MESSAGE_ERROR.REQUIRED_FIELDS};
+
+    } else {
+
+        //import da model de pizza
+        const novaPizza = require('../model/DAO/pizza.js');
+        //chama a função para inserir uma nova pizza
+        const result = await novaPizza.insertPizza(pizza);
+
+        if (result) {
+
+            return {status: 201, message: MESSAGE_SUCESS.INSERT_ITEM};
+
+        } else {
+
+            return {status: 500, message: MESSAGE_ERROR.INTERNAL_ERROR_DB};
+
+        }
+
+    }
+
+}
+
+//função para excluir um registro
+const excluirPizza = async function (id) {
+
+    //validação para o id como campo obrigatório
+    if (id == undefined || id == '') {
+
+        return {status: 400, message: MESSAGE_ERROR.REQUIRED_ID};
+
+    } else {
+
+        const removerPizza = require('../model/DAO/pizza.js');
+
+        const result = await removerPizza.deletePizza(id);
+
+        if (result) {
+
+            return {status: 200, message: MESSAGE_SUCESS.DELETE_ITEM};
+
+        } else {
+
+            return {status: 500, message: MESSAGE_ERROR.INTERNAL_ERROR_DB};
+
+        }
+
+    }
+
+}
+
 //função para retornar um registro
 const buscarPizza = async function (id) {
 
@@ -93,6 +151,8 @@ const buscarPizzasFavoritas = async function () {
 
 module.exports = {
 
+    novaPizza,
+    excluirPizza,
     buscarPizzas,
     buscarPizza,
     buscarPizzasDesconto,

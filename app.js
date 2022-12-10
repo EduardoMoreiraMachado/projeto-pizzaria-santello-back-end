@@ -732,6 +732,99 @@ app.post('/v1/bebida', cors(), jsonParser, async function(request, response) {
 
 });
 
+//EndPoint para excluir uma bebida
+app.delete('/v1/bebida/:id', cors(), jsonParser, async function(request, response) {
+
+    //recebe o id enviado por parâmetro na requisição
+    let id = request.params.id;
+    let statusCode;
+    let message;
+
+    //validação do ID na requisição
+    if (id != '' && id != undefined) {
+
+        //import do arquivo da controller de bebida
+        const controllerBebida = require('./controller/controllerBebida.js');
+        //chama a função para exlcuir uma bebida da controller
+        const deleteBebida = await controlleBebida.excluirBebida(id);
+
+        statusCode = deleteBebida.status;
+        message = deleteBebida.message;    
+
+    } else {
+
+        statusCode = 400;
+        message = MESSAGE_ERROR.REQUIRED_ID;
+
+    }
+
+    response.status(statusCode);
+    response.json(message);
+
+});
+
+//EndPoint para buscar uma bebida por id
+app.get('/v1/bebida/:id', cors(), async function(request, response) {
+
+    //recebe o id enviado por parâmetro na requisição
+    let id = request.params.id;
+    let statusCode;
+    let message;
+
+    if (id != '' && id != undefined) {
+        //import do arquivo controllerBebida
+        const controllerBebida = require('./controller/controllerBebida.js');
+
+        const selecionarBebida = await controllerBebida.buscarBebida(id);
+
+        statusCode = selecionarBebida.status;
+        message = selecionarBebida.message;
+
+    } else {
+        
+        statusCode = 400;
+        message = MESSAGE_ERROR.REQUIRED_ID;
+
+    }
+
+    response.status(statusCode);
+    response.json(message);
+
+});
+
+app.get('/v1/bebidas', cors(), async function(request, response) {
+
+    let statusCode;
+    let message;
+
+    //import do arquivo controllerBebida
+    const controllerBebida = require('./controller/controllerBebida.js');
+
+    //retorna todas as bebidas existentes no BD
+    const dadosBebidas = await controllerBebida.buscarBebidas();
+
+    //valida se existe retorno de dados
+    if (dadosBebidas) {
+
+        //status 200
+        statusCode = dadosBebidas.status;
+        message = dadosBebidas.message;
+
+    } else {
+
+        //status 404
+        statusCode = 404;
+        message = MESSAGE_ERROR.NOT_FOUND_DB;
+
+    }
+
+    //retorna os dados da API
+    response.status(statusCode);
+    response.json(message);    
+
+});
+
+
 //EndPoint para atualizar registros de uma bebida 
 app.put('/v1/bebida/:id', cors(), jsonParser, async function(request, response) {
 
@@ -795,9 +888,85 @@ app.put('/v1/bebida/:id', cors(), jsonParser, async function(request, response) 
 
 /* * * * * * * * * * * * * * * * * * * * *
     rotas para CRUD de pizzas (Create, Read, Update e Delete)
-    data: 30/11/2022
+    data: 09/12/2022
 * * * * * * * * * * * * * * * * * * * * */
 
+//EndPoint para inserir uma nova pizza
+app.post('/v1/pizza', cors(), jsonParser, async function(request, response) {
+
+    let statusCode;
+    let message;
+    let headerContentType;
+
+    //recebe o tipo de content-type que foi enviado no header da requisição
+    headerContentType = request.headers['content-type'];
+
+    if (headerContentType == 'application/json') {
+        
+        //recebe do corpo da mensagem o conteúdo
+        let dadosBody = request.body;
+        //realiza um processo de conversão de dados para conseguir comparar o JSON vazio
+        if (JSON.stringify(dadosBody) != '{}') {
+
+            //import do arquivo da controller de pizza
+            const controllerPizza = require('./controller/controllerPizza.js');
+            //chama a função nova pizza da controller e encaminha os dados do body
+            const novaPizza = await controllerPizza.novaPizza(dadosBody);
+
+            statusCode = novaPizza.status;
+            message = novaPizza.message;    
+
+        } else {
+
+            statusCode = 400;
+            message = MESSAGE_ERROR.EMPTY_BODY;
+
+        }
+
+    } else {
+
+        statusCode = 415;
+        message = MESSAGE_ERROR.CONTENT_TYPE;
+
+    }
+
+    response.status(statusCode);
+    response.json(message);
+
+});
+
+//EndPoint para excluir uma pizza
+app.delete('/v1/pizza/:id', cors(), jsonParser, async function(request, response) {
+
+    //recebe o id enviado por parâmetro na requisição
+    let id = request.params.id;
+    let statusCode;
+    let message;
+
+    //validação do ID na requisição
+    if (id != '' && id != undefined) {
+
+        //import do arquivo da controller de pizza
+        const controllerPizza = require('./controller/controllerPizza.js');
+        //chama a função para exlcuir uma pizza da controller
+        const deletePizza = await controllerPizza.excluirPizza(id);
+
+        statusCode = deletePizza.status;
+        message = deletePizza.message;    
+
+    } else {
+
+        statusCode = 400;
+        message = MESSAGE_ERROR.REQUIRED_ID;
+
+    }
+
+    response.status(statusCode);
+    response.json(message);
+
+});
+
+//EndPoint para buscar uma pizza por id
 app.get('/v1/pizza/:id', cors(), async function(request, response) {
 
     //recebe o id enviado por parâmetro na requisição
