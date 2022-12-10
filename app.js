@@ -684,121 +684,6 @@ app.delete('/v1/categoria/:id', cors(), jsonParser, async function(request, resp
 
 
 /* * * * * * * * * * * * * * * * * * * * *
-    rotas para CRUD de ingredientes (Create, Read, Update e Delete)
-    data: 27/11/2022
-* * * * * * * * * * * * * * * * * * * * */
-
-//EndPoint para listar todos os ingredientes
-app.get('/v1/ingredientes', cors(), async function(request, response) {
-
-    let statusCode;
-    let message;
-
-    //import do arquivo controllerIngrediente
-    const controllerIngrediente = require('./controller/controllerIngrediente.js');
-
-    //retorna todos os servicos existentes no BD
-    const dadosIngredientes = await controllerIngrediente.listarIngredientes();
-
-    //valida se existe retorno de dados
-    if (dadosIngredientes) {
-
-        //status 200
-        statusCode = 200;
-        message = dadosIngredientes;
-
-    } else {
-
-        //status 404
-        statusCode = 404;
-        message = MESSAGE_ERROR.NOT_FOUND_DB;
-
-    }
-
-    //retorna os dados da API
-    response.status(statusCode);
-    response.json(message);
-
-});
-
-//EndPoint para inserir um novo ingrediente
-app.post('/v1/ingrediente', cors(), jsonParser, async function(request, response) {
-
-    let statusCode;
-    let message;
-    let headerContentType;
-
-    //recebe o tipo de content-type que foi enviado no header da requisição
-    headerContentType = request.headers['content-type'];
-
-    if (headerContentType == 'application/json') {
-        
-        //recebe do corpo da mensagem o conteúdo
-        let dadosBody = request.body;
-        //realiza um processo de conversão de dados para conseguir comparar o JSON vazio
-        if (JSON.stringify(dadosBody) != '{}') {
-
-            //import do arquivo da controller de ingrediente
-            const controllerIngrediente = require('./controller/controllerIngrediente.js');
-            //chama a função novo ingrediente da controller e encaminha os dados do body
-            const novoIngrediente = await controllerIngrediente.novoIngrediente(dadosBody);
-
-            statusCode = novoIngrediente.status;
-            message = novoIngrediente.message;    
-
-        } else {
-
-            statusCode = 400;
-            message = MESSAGE_ERROR.EMPTY_BODY;
-
-        }
-
-    } else {
-
-        statusCode = 415;
-        message = MESSAGE_ERROR.CONTENT_TYPE;
-
-    }
-
-    response.status(statusCode);
-    response.json(message);
-
-});
-
-//EndPoint para excluir um ingrediente
-app.delete('/v1/ingrediente/:id', cors(), jsonParser, async function(request, response) {
-
-    //recebe o id enviado por parâmetro na requisição
-    let id = request.params.id;
-    let statusCode;
-    let message;
-
-    //validação do ID na requisição
-    if (id != '' && id != undefined) {
-
-        //import do arquivo da controller de ingrediente
-        const controllerIngrediente = require('./controller/controllerIngrediente.js');
-        //chama a função para exlcuir um ingrediente da controller
-        const deleteIngrediente = await controllerIngrediente.excluirIngrediente(id);
-
-        statusCode = deleteIngrediente.status;
-        message = deleteIngrediente.message;    
-
-    } else {
-
-        statusCode = 400;
-        message = MESSAGE_ERROR.REQUIRED_ID;
-
-    }
-
-    response.status(statusCode);
-    response.json(message);
-
-});
-
-
-
-/* * * * * * * * * * * * * * * * * * * * *
     rotas para CRUD de bebidas (Create, Read, Update e Delete)
     data: 05/12/2022
 * * * * * * * * * * * * * * * * * * * * */
@@ -1038,7 +923,7 @@ app.get('/v1/pizzasFavoritas', cors(), async function(request, response) {
 });
 
 //ativa o servidor para receber requisições HTTP
-app.listen(3030, function() {
+app.listen(1234, function() {
 
     console.log('Servidor aguardando requisições...');
 

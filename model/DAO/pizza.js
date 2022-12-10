@@ -16,28 +16,55 @@ const insertPizza = async function (pizza) {
 
     try {
 
-        let sql = `insert into tbl_produto(
-                                           nome,
-                                           preco,
-                                           foto,
-                                           id_categoria
-                                           )
-                                           values
-                                           (
-                                               '${pizza.nome}',
-                                               '${pizza.preco}',
-                                               '${pizza.foto}',
-                                               '${pizza.id_categoria}'
-                                           );
-                                           
-                   insert into tbl_pizza(qntd_favorito, id_produto) values(${pizza.qntd_favorito}, ${pizza.id_produto});`;
+        let insertProduto = `insert into tbl_produto(
+                                         nome,
+                                         preco,
+                                         foto,
+                                         codigo_tipo,
+                                         id_categoria
+                                         )
+                                   values(
+                                          '${pizza.nome}',
+                                           ${pizza.preco},
+                                          '${pizza.foto}',
+                                           1,
+                                          '${pizza.id_categoria}'
+                                          )`;
 
         //executa o script SQL no BD ($executeRawUnsafe() permite encaminhar uma variável contendo o script)
-        const result = await prisma.$executeRawUnsafe(sql);
+        const resultProduto = await prisma.$executeRawUnsafe(insertProduto);
 
-        if (result) {
+        if (resultProduto) {
 
-            return true;
+            let selectLastID = `select id from tbl_pizza order by id desc limit 1`
+
+            const resultSelect = await prisma.$queryRawUnsafe(selectLastID)
+
+            if (resultSelect.length > 0) {
+
+                let updatePizza = `update tbl_pizza set desconto = ${pizza.desconto}, 
+                                                        qntd_favorito = ${pizza.qntd_favorito}, 
+                                                        ingredientes = '${pizza.ingredientes}' 
+                                                        where id = ${resultSelect[0].id};`;
+
+                //executa o script SQL no BD ($executeRawUnsafe() permite encaminhar uma variável contendo o script)
+                const resultPizza = await prisma.$executeRawUnsafe(updatePizza);
+
+                if (resultPizza) {
+
+                    return true;
+
+                } else {
+
+                    return false;
+
+                }
+
+            } else {
+
+                return false;
+
+            }
 
         } else {
 
@@ -109,13 +136,13 @@ const deletePizza = async function (id) {
 const selectPizza = async function (id) {
 
     let sql = `select tbl_produto.foto, tbl_produto.nome as nome_produto, tbl_produto.preco,
-               tbl_bebida.peso_liquido,
+               tbl_pizza.desconto, tbl_pizza.qntd_favorito, tbl_pizza.ingredientes,
                tbl_categoria.nome as nome_categoria
                from tbl_produto
                    inner join tbl_categoria
                        on tbl_categoria.id = tbl_produto.id_categoria
-                   inner join tbl_bebida
-                       on tbl_produto.id = tbl_bebida.id_produto
+                   inner join tbl_pizza
+                       on tbl_produto.id = tbl_pizza.id_produto
                where tbl_produto.id = ${id};`;
 
     //executa o script SQL no BD ($executeRawUnsafe() permite encaminhar uma variável contendo o script)
@@ -133,11 +160,96 @@ const selectPizza = async function (id) {
 
 }
 
+const selectPizzas = async function () {
+
+    let sql = `select tbl_produto.id as id_produto, tbl_produto.foto, tbl_produto.nome as nome_produto, tbl_produto.preco,
+               tbl_pizza.desconto, tbl_pizza.qntd_favorito, tbl_pizza.ingredientes,
+               tbl_categoria.id as id_categoria, tbl_categoria.nome as nome_categoria
+               from tbl_produto
+                   inner join tbl_pizza
+                       on tbl_produto.id = tbl_pizza.id_produto
+                   inner join tbl_categoria
+                       on tbl_categoria.id = tbl_produto.id_categoria;`;
+
+    //executa o script SQL no BD ($executeRawUnsafe() permite encaminhar uma variável contendo o script)
+    const result = await prisma.$queryRawUnsafe(sql);
+    
+    if (result.length > 0) {
+
+        return result;
+
+    } else {
+
+        return false;
+
+    }
+
+}
+
+
+const selectDiscountPizzas = async function () {
+
+    let sql = `select tbl_produto.id as id_produto, tbl_produto.foto, tbl_produto.nome as nome_produto, tbl_produto.preco,
+               tbl_pizza.desconto, tbl_pizza.qntd_favorito, tbl_pizza.ingredientes,
+               tbl_categoria.id as id_categoria, tbl_categoria.nome as nome_categoria
+               from tbl_produto
+                   inner join tbl_pizza
+                       on tbl_produto.id = tbl_pizza.id_produto
+                   inner join tbl_categoria
+                       on tbl_categoria.id = tbl_produto.id_categoria
+               where tbl_pizza.desconto not null;`;
+
+    //executa o script SQL no BD ($executeRawUnsafe() permite encaminhar uma variável contendo o script)
+    const result = await prisma.$queryRawUnsafe(sql);
+    
+    if (result.length > 0) {
+
+        return result;
+
+    } else {
+
+        return false;
+
+    }
+
+}
+
+const selectFavoritePizzas = async function () {
+
+    let sql = `select tbl_produto.id as id_produto, tbl_produto.foto, tbl_produto.nome as nome_produto, tbl_produto.preco,
+               tbl_pizza.desconto, tbl_pizza.qntd_favorito, tbl_pizza.ingredientes,
+               tbl_categoria.id as id_categoria, tbl_categoria.nome as nome_categoria
+               from tbl_produto
+                   inner join tbl_pizza
+                       on tbl_produto.id = tbl_pizza.id_produto
+                   inner join tbl_categoria
+                       on tbl_categoria.id = tbl_produto.id_categoria
+               order by tbl_pizza.qntd_desconto desc limit 6;`;
+
+    //executa o script SQL no BD ($executeRawUnsafe() permite encaminhar uma variável contendo o script)
+    const result = await prisma.$queryRawUnsafe(sql);
+    
+    if (result.length > 0) {
+
+        return result;
+
+    } else {
+
+        return false;
+
+    }
+
+}
+
+
 module.exports = {
 
     insertPizza,
     updatePizza,
     deletePizza,
     selectPizza,
+    selectPizzas,
+    selectDiscountPizzas,
+    selectFavoritePizzas
 
 }

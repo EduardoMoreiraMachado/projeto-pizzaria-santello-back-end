@@ -10,25 +10,19 @@ const { MESSAGE_ERROR, MESSAGE_SUCESS } = require('../module/config.js');
 //função para retornar um registro
 const buscarPizza = async function (id) {
 
-    let dadosPizzaJSON = {};
-
     if (id == undefined || id == '') {
 
         return {status: 400, message: MESSAGE_ERROR.REQUIRED_ID};
 
     } else {
 
-        const selecionarPizza = require('../model/DAO/pizza_ingrediente.js');
+        const selecionarPizza = require('../model/DAO/pizza.js');
 
         const pizza = await selecionarPizza.selectPizza(id);
-        const ingrediente = await selecionarPizza.selectIngrediente(id)
 
-        if (pizza && ingrediente) {
+        if (pizza) {
 
-            dadosPizzaJSON.pizza = pizza;
-            dadosPizzaJSON.ingrediente = ingrediente
-
-            return {status: 200, message: dadosPizzaJSON};
+            return {status: 200, message: pizza};
 
         } else {
 
@@ -43,27 +37,13 @@ const buscarPizza = async function (id) {
 //função para retornar todos os registros
 const buscarPizzas = async function () {
 
-    const selecionarPizzas = require('../model/DAO/pizza_ingrediente.js');
+    const selecionarPizzas = require('../model/DAO/pizza.js');
 
     const pizzas = await selecionarPizzas.selectPizzas();
 
     if (pizzas) {
 
-        const pizzaIngrediente = pizzas.map(async itemPizza => {
-
-            const selecionarIngredientes = require('../model/DAO/pizza_ingrediente.js');
-
-            const ingredientes = await selecionarIngredientes.selectIngrediente(itemPizza.id_produto);
-
-            console.log(ingredientes)
-        
-            itemPizza.ingredientes = ingredientes;
-
-            return itemPizza;
-
-        });
-
-        return {status: 200, message: await Promise.all(pizzaIngrediente)};
+        return {status: 200, message: pizzas};
 
     } else {
 
@@ -73,11 +53,49 @@ const buscarPizzas = async function () {
 
 }
 
-//console.log(buscarPizzas())
+//função para retornar todos os registros
+const buscarPizzasDesconto = async function () {
+
+    const selecionarPizzas = require('../model/DAO/pizza.js');
+
+    const pizzas = await selecionarPizzas.selectDiscountPizzas();
+
+    if (pizzas) {
+
+        return {status: 200, message: pizzas};
+
+    } else {
+
+        return {status: 500, message: MESSAGE_ERROR.INTERNAL_ERROR_DB};
+
+    }
+
+}
+
+//função para retornar todos os registros
+const buscarPizzasFavoritas = async function () {
+
+    const selecionarPizzas = require('../model/DAO/pizza_ingrediente.js');
+
+    const pizzas = await selecionarPizzas.selectFavoritesPizzas();
+
+    if (pizzas) {
+
+        return {status: 200, message: pizzas};
+
+    } else {
+
+        return {status: 500, message: MESSAGE_ERROR.INTERNAL_ERROR_DB};
+
+    }
+
+}
 
 module.exports = {
 
     buscarPizzas,
-    buscarPizza
+    buscarPizza,
+    buscarPizzasDesconto,
+    buscarPizzasFavoritas
 
 }
