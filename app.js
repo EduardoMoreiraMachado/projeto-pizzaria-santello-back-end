@@ -885,7 +885,7 @@ app.put('/v1/bebida/:id', cors(), jsonParser, async function(request, response) 
 });
 
 //EndPoint para buscar uma bebida por categoria
-app.get('/v1/bebidaCategoria/:id', cors(), async function(request, response) {
+app.get('/v1/bebidasCategoria/:id', cors(), async function(request, response) {
 
     //recebe o id enviado por parâmetro na requisição
     let id = request.params.id;
@@ -1040,6 +1040,7 @@ app.get('/v1/pizzas', cors(), async function(request, response) {
         //status 200
         statusCode = dadosPizzas.status;
         message = dadosPizzas.message;
+        console.log(dadosPizzas.message)
 
     } else {
 
@@ -1180,7 +1181,7 @@ app.put('/v1/pizza/:id', cors(), jsonParser, async function(request, response) {
 });
 
 //EndPoint para buscar uma pizza por categoria
-app.get('/v1/pizzaCategoria/:id', cors(), async function(request, response) {
+app.get('/v1/pizzasCategoria/:id', cors(), async function(request, response) {
 
     //recebe o id enviado por parâmetro na requisição
     let id = request.params.id;

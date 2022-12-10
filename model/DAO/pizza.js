@@ -234,7 +234,7 @@ const selectFavoritePizzas = async function () {
 
 }
 
-const selectCategoryPizza = async function (id) {
+const selectCategoryPizzas = async function (id) {
 
     let sql = `select tbl_produto.id as id_produto, tbl_produto.foto, tbl_produto.nome as nome_produto, tbl_produto.preco,
     tbl_pizza.id as id_pizza, tbl_pizza.desconto, tbl_pizza.qntd_favorito, tbl_pizza.ingredientes,
@@ -270,6 +270,5 @@ module.exports = {
     selectPizzas,
     selectDiscountPizzas,
     selectFavoritePizzas,
-    selectCategoryPizza
-
+    selectCategoryPizzas
 }
