@@ -1040,7 +1040,6 @@ app.get('/v1/pizzas', cors(), async function(request, response) {
         //status 200
         statusCode = dadosPizzas.status;
         message = dadosPizzas.message;
-        console.log(dadosPizzas.message)
 
     } else {
 

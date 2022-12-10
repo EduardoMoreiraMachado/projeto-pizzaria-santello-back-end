@@ -75,7 +75,6 @@ const atualizarBebida = async function (bebida) {
 
 }
 
-
 //função para excluir um registro
 const excluirBebida = async function (id) {
 
@@ -104,6 +103,32 @@ const excluirBebida = async function (id) {
 
 }
 
+//função para retornar um registro
+const buscarBebida = async function (id) {
+
+    if (id == undefined || id == '') {
+
+        return {status: 400, message: MESSAGE_ERROR.REQUIRED_ID};
+
+    } else {
+
+        const selecionarBebida = require('../model/DAO/bebida.js');
+
+        const bebida = await selecionarBebida.selectBebida(id);
+
+        if (bebida) {
+
+            return {status: 200, message: bebida};
+
+        } else {
+
+            return {status: 500, message: MESSAGE_ERROR.INTERNAL_ERROR_DB};
+
+        }
+
+    }
+
+}
 
 
 //função para retornar todos os registros
@@ -156,6 +181,7 @@ module.exports = {
 
     novaBebida,
     excluirBebida,
+    buscarBebida,
     listarBebidas,
     atualizarBebida,
     listarBebidasCategoria
