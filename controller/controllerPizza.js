@@ -133,9 +133,9 @@ const buscarPizzasDesconto = async function () {
 //função para retornar todos os registros
 const buscarPizzasFavoritas = async function () {
 
-    const selecionarPizzas = require('../model/DAO/pizza_ingrediente.js');
+    const selecionarPizzas = require('../model/DAO/pizza.js');
 
-    const pizzas = await selecionarPizzas.selectFavoritesPizzas();
+    const pizzas = await selecionarPizzas.selectFavoritePizzas();
 
     if (pizzas) {
 
@@ -149,6 +149,44 @@ const buscarPizzasFavoritas = async function () {
 
 }
 
+//função para atualizar um registro
+const atualizarPizza = async function (pizza) {
+
+    //validação para o id como campo obrigatório
+    if (pizza.id_pizza == undefined || pizza.id_pizza == ''  || pizza.id_categoria == undefined || pizza.id_categoria == '' ||
+        pizza.id_produto == undefined || pizza.id_produto == '') {
+
+        return {status: 400, message: MESSAGE_ERROR.REQUIRED_ID};
+
+    }
+
+    //validação de campos obrigatórios
+    if (pizza.nome == undefined || pizza.preco == undefined || pizza.foto == undefined || pizza.ingredientes == undefined || pizza.qntd_favorito == undefined ||
+        pizza.nome == '' || isNaN(pizza.preco) || pizza.foto == '' || pizza.ingredientes == '' || isNaN(pizza.qntd_favorito)) {
+
+        return {status: 400, message: MESSAGE_ERROR.REQUIRED_FIELDS};
+
+    } else {
+
+        //import da model de cliente
+        const atualizarPizza = require('../model/DAO/pizza');
+        //chaa a função para atualizar um cliente 
+        const result = await atualizarPizza.updatePizza(pizza)
+
+        if (result) {
+
+            return {status: 201, message: MESSAGE_SUCESS.UPDATE_ITEM};
+
+        } else {
+
+            return {status: 500, message:MESSAGE_ERROR.INTERNAL_ERROR_DB};
+
+        }
+
+    }
+
+}
+
 module.exports = {
 
     novaPizza,
@@ -156,6 +194,7 @@ module.exports = {
     buscarPizzas,
     buscarPizza,
     buscarPizzasDesconto,
-    buscarPizzasFavoritas
+    buscarPizzasFavoritas,
+    atualizarPizza
 
 }

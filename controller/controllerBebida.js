@@ -40,8 +40,6 @@ const novaBebida = async function (bebida) {
 //função para atualizar um registro
 const atualizarBebida = async function (bebida) {
 
-    console.log(bebida)
-
     //validação para o id como campo obrigatório
     if (bebida.id_bebida == undefined || bebida.id_bebida == ''  || bebida.id_categoria == undefined || bebida.id_categoria == '' ||
         bebida.id_produto == undefined || bebida.id_produto == '') {
@@ -111,13 +109,15 @@ const listarBebidas = async function () {
 
     let dadosBebidasJSON = {};
 
-    const { selectAllBebidas } = require('../model/DAO/bebida.js');
+    const todasBebidas = require('../model/DAO/bebida.js');
 
-    const dadosBebidas = await selectAllBebidas();
+    const dadosBebidas = await todasBebidas.selectAllBebidas();
+    console.log(dadosBebidas)
 
     if (dadosBebidas) {
 
-        dadosBebidasJSON.bebidas = dadosBebidas;
+        dadosBebidasJSON.status = 200
+        dadosBebidasJSON.message = dadosBebidas;
         return dadosBebidasJSON;
 
     } else {

@@ -166,7 +166,7 @@ const selectAllBebidas = async function () {
 
         if (rsBebidas.length > 0) {
 
-            return rsContato;
+            return rsBebidas;
 
         } else {
 
