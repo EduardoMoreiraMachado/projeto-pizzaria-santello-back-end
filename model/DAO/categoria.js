@@ -14,12 +14,14 @@ const prisma = new PrismaClient();
 //função para inserir um novo registro no BD
 const insertCategoria = async function(categoria) {
 
-    try {
+    // try {
+        console.log(categoria)
 
         let sql = `insert into tbl_categoria(nome, codigo_tipo) values('${categoria.nome}', ${categoria.codigo_tipo})`;
 
         //executa o script SQL no BD ($executeRawUnsafe() permite encaminhar uma variável contendo o script)
         const result = await prisma.$executeRawUnsafe(sql);
+        console.log(result)
 
         if (result) {
 
@@ -31,11 +33,11 @@ const insertCategoria = async function(categoria) {
 
         }
 
-    } catch (error) {
+    // } catch (error) {
 
-        return false;
+    //     return false;
 
-    }
+    // }
 
 }
 

@@ -1269,7 +1269,7 @@ app.put('/v1/pizzaLikes/:id', cors(), jsonParser, async function(request, respon
 });
 
 //ativa o servidor para receber requisições HTTP
-app.listen(1234, function() {
+app.listen(4182, function() {
 
     console.log('Servidor aguardando requisições...');
 
