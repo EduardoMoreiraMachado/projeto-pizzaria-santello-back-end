@@ -82,6 +82,7 @@ const insertPizza = async function (pizza) {
 
 //função para atualizar um registro no BD
 const updatePizza = async function (pizza) {
+    console.log(pizza)
 
     try {
         let sqlUpdate = `CALL update_produto_pizza (${pizza.id_produto}, '${pizza.nome}', ${pizza.preco}, '${pizza.foto}', ${pizza.id_categoria},
@@ -89,6 +90,7 @@ const updatePizza = async function (pizza) {
 
         const result = await prisma.$executeRawUnsafe(sqlUpdate);
 
+        console.log(result)
         if (result) {
             return true
         }
@@ -98,7 +100,7 @@ const updatePizza = async function (pizza) {
         }
 
     } catch (error) {
-
+        
         return false;
         
     }

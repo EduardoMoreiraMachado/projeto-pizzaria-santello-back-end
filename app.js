@@ -1141,7 +1141,7 @@ app.put('/v1/pizza/:id', cors(), jsonParser, async function(request, response) {
             let id = request.params.id;
 
             //validação do ID na requisição
-            if (id != '' && id != undefined) {
+            if (id != '' && id != undefined && !(isNaN(id))) {
 
                 //adiciona o id no JSON que chegou do corpo da requisição
                 dadosBody.id_pizza = id;
