@@ -37,10 +37,11 @@ const novaCategoria = async function (categoria) {
 }
 
 //função para excluir um registro
-const excluirCategoria = async function (id) {
+const atualizarStatusCategoria = async function (status, id) {
 
-    //validação para o id como campo obrigatório
-    if (id == undefined || id == '') {
+    //validação dos campos obrigatórios
+    if (id == undefined || status == undefined || 
+        id == '' || status == '') {
 
         return {status: 400, message: MESSAGE_ERROR.REQUIRED_ID};
 
@@ -48,11 +49,11 @@ const excluirCategoria = async function (id) {
 
         const removerCategoria = require('../model/DAO/categoria.js');
 
-        const result = await removerCategoria.deleteCategoria(id);
+        const result = await removerCategoria.updateStatusCategoria(status, id);
 
         if (result) {
 
-            return {status: 200, message: MESSAGE_SUCESS.DELETE_ITEM};
+            return {status: 200, message: MESSAGE_SUCESS.UPDATE_ITEM};
 
         } else {
 
@@ -89,7 +90,7 @@ const listarCategorias = async function () {
 module.exports = {
 
     novaCategoria,
-    excluirCategoria,
+    atualizarStatusCategoria,
     listarCategorias
 
 }

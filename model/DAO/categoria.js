@@ -42,9 +42,9 @@ const insertCategoria = async function(categoria) {
 }
 
 //função para remover um registro no BD
-const deleteCategoria = async function (id) {
+const updateStatusCategoria = async function (status, id) {
 
-    let sql = `delete from tbl_categoria where id = ${id};`;
+    let sql = `update tbl_categoria set status_categoria = ${status} where id = ${id};`;
 
     //execura o script SQL no BD ($executeRawUnsafe() permite encaminhar uma variável contendo o script)
     const result = await prisma.$executeRawUnsafe(sql);
@@ -82,7 +82,7 @@ const selectAllCategorias = async function () {
 module.exports = {
 
     insertCategoria,
-    deleteCategoria,
+    updateStatusCategoria,
     selectAllCategorias
 
 }

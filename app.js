@@ -651,9 +651,11 @@ app.post('/v1/categoria', cors(), jsonParser, async function(request, response) 
 
 });
 
-//EndPoint para excluir uma categoria
-app.delete('/v1/categoria/:id', cors(), jsonParser, async function(request, response) {
+//EndPoint para atualizar o status de uma categoria
+app.put('/v1/categoriaStatus/:status/:id', cors(), async function(request, response) {
 
+    //recebe o status enviado por parâmetro na requisição
+    let status = request.params.status;
     //recebe o id enviado por parâmetro na requisição
     let id = request.params.id;
     let statusCode;
@@ -665,7 +667,7 @@ app.delete('/v1/categoria/:id', cors(), jsonParser, async function(request, resp
         //import do arquivo da controller de categoria
         const controllerCategoria = require('./controller/controllerCategoria.js');
         //chama a função para exlcuir uma categoria da controller
-        const deleteCategoria = await controllerCategoria.excluirCategoria(id);
+        const deleteCategoria = await controllerCategoria.atualizarStatusCategoria(status, id);
 
         statusCode = deleteCategoria.status;
         message = deleteCategoria.message;    
