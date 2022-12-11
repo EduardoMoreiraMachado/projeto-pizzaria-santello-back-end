@@ -206,6 +206,45 @@ const buscarPizzasCategoria = async function (id) {
 
 }
 
+//função para atualizar um registro
+const atualizarLikesPizza = async function (pizza, id) {
+
+    //validação para o id como campo obrigatório
+    if (id == undefined ||
+        id == '') {
+
+        return {status: 400, message: MESSAGE_ERROR.REQUIRED_ID};
+
+    }
+
+    //validação de campos obrigatórios
+    if (pizza.qntd_favorito == undefined ||
+        pizza.qntd_favorito == '') {
+
+        return {status: 400, message: MESSAGE_ERROR.REQUIRED_FIELDS};
+
+    } else {
+
+        //import da model de cliente
+        const atualizarPizza = require('../model/DAO/pizza');
+        //chaa a função para atualizar um cliente 
+        const result = await atualizarPizza.updatePizzaLikes(pizza, id)
+
+        if (result) {
+
+            return {status: 201, message: MESSAGE_SUCESS.UPDATE_ITEM};
+
+        } else {
+
+            return {status: 500, message:MESSAGE_ERROR.INTERNAL_ERROR_DB};
+
+        }
+
+    }
+
+}
+
+
 module.exports = {
 
     novaPizza,
@@ -215,6 +254,7 @@ module.exports = {
     buscarPizzasDesconto,
     buscarPizzasFavoritas,
     atualizarPizza,
-    buscarPizzasCategoria
+    buscarPizzasCategoria,
+    atualizarLikesPizza
 
 }

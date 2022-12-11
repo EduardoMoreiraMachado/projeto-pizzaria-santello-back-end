@@ -1119,7 +1119,7 @@ app.get('/v1/pizzasFavoritas', cors(), async function(request, response) {
 
 });
 
-//EndPoint para atualizar registros de uma bebida 
+//EndPoint para atualizar registros de uma pizza
 app.put('/v1/pizza/:id', cors(), jsonParser, async function(request, response) {
 
     let statusCode;
@@ -1148,10 +1148,10 @@ app.put('/v1/pizza/:id', cors(), jsonParser, async function(request, response) {
                 //import do arquivo da controller de serviço
                 const controllerPizza = require('./controller/controllerPizza.js');
                 //chama a função para atualizar um aluno da controller e encaminha os dados do body
-                const atualizarBebida = await controllerPizza.atualizarPizza(dadosBody);
+                const atualizarPizza = await controllerPizza.atualizarPizza(dadosBody);
 
-                statusCode = atualizarBebida.status;
-                message = atualizarBebida.message; 
+                statusCode = atualizarPizza.status;
+                message = atualizarPizza.message; 
 
             } else {
 
@@ -1200,6 +1200,66 @@ app.get('/v1/pizzasCategoria/:id', cors(), async function(request, response) {
         
         statusCode = 400;
         message = MESSAGE_ERROR.REQUIRED_ID;
+
+    }
+
+    response.status(statusCode);
+    response.json(message);
+
+});
+
+//EndPoint para atualizar registros da quantidade de likes de uma pizza 
+app.put('/v1/pizzaLikes/:id', cors(), jsonParser, async function(request, response) {
+
+    let statusCode;
+    let message;
+    let headerContentType;
+
+    //recebe o tipo de content-type que foi enviado no header da requisição
+    headerContentType = request.headers['content-type'];
+
+    if (headerContentType == 'application/json') {
+        
+        //recebe do corpo da mensagem o conteúdo
+        let dadosBody = request.body;
+
+        //realiza um processo de conversão de dados para conseguir comparar o JSON vazio
+        if (JSON.stringify(dadosBody) != '{}') {
+            
+            //recebe o id enviado por parâmetro na requisição
+            let id = request.params.id;
+
+            //validação do ID na requisição
+            if (id != '' && id != undefined && !(isNaN(id))) {
+
+                //adiciona o id no JSON que chegou do corpo da requisição
+                dadosBody.id_pizza = id;
+                //import do arquivo da controller de serviço
+                const controllerPizza = require('./controller/controllerPizza.js');
+                //chama a função para atualizar um aluno da controller e encaminha os dados do body
+                const atualizarPizza = await controllerPizza.atualizarLikesPizza(dadosBody, id);
+
+                statusCode = atualizarPizza.status;
+                message = atualizarPizza.message; 
+
+            } else {
+
+                statusCode = 400; 
+                message = MESSAGE_ERROR.REQUIRED_ID
+
+            }
+
+        } else {
+
+            statusCode = 400;
+            message = MESSAGE_ERROR.EMPTY_BODY;
+
+        }
+
+    } else {
+
+        statusCode = 415;
+        message = MESSAGE_ERROR.CONTENT_TYPE;
 
     }
 

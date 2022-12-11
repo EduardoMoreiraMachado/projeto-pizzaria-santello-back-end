@@ -82,7 +82,6 @@ const insertPizza = async function (pizza) {
 
 //função para atualizar um registro no BD
 const updatePizza = async function (pizza) {
-    console.log(pizza)
 
     try {
         let sqlUpdate = `CALL update_produto_pizza (${pizza.id_produto}, '${pizza.nome}', ${pizza.preco}, '${pizza.foto}', ${pizza.id_categoria},
@@ -269,6 +268,36 @@ const selectCategoryPizzas = async function (id) {
 
 }
 
+//função para atualizar um registro no BD
+const updatePizzaLikes = async function (pizza, id) {
+
+    try {
+
+        let sql = `update tbl_pizza set qntd_favorito = ${pizza.qntd_favorito} 
+                   where id = ${id};`;
+
+        const result = await prisma.$executeRawUnsafe(sql);
+
+        if (result) {
+
+            return true;
+        }
+
+        else {
+
+            return false;
+
+        }
+
+    } catch (error) {
+        
+        return false;
+        
+    }
+
+}
+
+
 module.exports = {
 
     insertPizza,
@@ -278,5 +307,6 @@ module.exports = {
     selectPizzas,
     selectDiscountPizzas,
     selectFavoritePizzas,
-    selectCategoryPizzas
+    selectCategoryPizzas,
+    updatePizzaLikes
 }
