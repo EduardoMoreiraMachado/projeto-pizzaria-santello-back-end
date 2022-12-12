@@ -14,8 +14,7 @@ const prisma = new PrismaClient();
 //função para inserir um novo registro no BD
 const insertCategoria = async function(categoria) {
 
-    // try {
-        console.log(categoria)
+    try {
 
         let sql = `insert into tbl_categoria(nome, codigo_tipo) values('${categoria.nome}', ${categoria.codigo_tipo})`;
 
@@ -33,11 +32,11 @@ const insertCategoria = async function(categoria) {
 
         }
 
-    // } catch (error) {
+    } catch (error) {
 
-    //     return false;
+        return false;
 
-    // }
+    }
 
 }
 

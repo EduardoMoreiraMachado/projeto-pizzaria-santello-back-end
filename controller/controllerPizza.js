@@ -9,10 +9,9 @@ const { MESSAGE_ERROR, MESSAGE_SUCESS } = require('../module/config.js');
 
 //função para gerar um novo registro
 const novaPizza = async function (pizza) {
-
     //validação de campos obrigatórios
-    if (pizza.nome == undefined || pizza.preco == undefined || pizza.foto == undefined || pizza.id_categoria == undefined || pizza.qntd_favorito == undefined || pizza.ingredientes == undefined || 
-        pizza.nome == '' || pizza.preco == '' || pizza.foto == '' || pizza.id_categoria == '' || pizza.qntd_favorito == '' || pizza.ingredientes == '') {
+    if (pizza.nome == undefined || pizza.preco == undefined || pizza.foto == undefined || pizza.id_categoria == undefined || pizza.ingredientes == undefined || 
+        pizza.nome == '' || pizza.preco == '' || pizza.foto == '' || pizza.id_categoria == '' || pizza.ingredientes == '') {
 
         return {status: 400, message: MESSAGE_ERROR.REQUIRED_FIELDS};
 
@@ -110,6 +109,27 @@ const buscarPizzas = async function () {
     }
 
 }
+
+//função para retornar todos os registros
+const buscarTodasPizzas = async function () {
+
+    const selecionarPizzas = require('../model/DAO/pizza.js');
+
+    const pizzas = await selecionarPizzas.selectTodasPizzas();
+
+    if (pizzas) {
+
+        return {status: 200, message: pizzas};
+
+    } else {
+
+        return {status: 500, message: MESSAGE_ERROR.INTERNAL_ERROR_DB};
+
+    }
+
+}
+
+buscarPizzas()
 
 //função para retornar todos os registros
 const buscarPizzasDesconto = async function () {
@@ -255,6 +275,7 @@ module.exports = {
     buscarPizzasFavoritas,
     atualizarPizza,
     buscarPizzasCategoria,
-    atualizarLikesPizza
+    atualizarLikesPizza,
+    buscarTodasPizzas
 
 }

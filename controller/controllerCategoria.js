@@ -11,7 +11,7 @@ const { MESSAGE_ERROR, MESSAGE_SUCESS } = require('../module/config.js');
 const novaCategoria = async function (categoria) {
 
     //validação de campos obrigatórios
-    if (categoria.nome == undefined || categoria.nome == '') {
+    if (categoria.nome == undefined || categoria.nome == '' || categoria.codigo_tipo == undefined || categoria.codigo_tipo == '') {
 
         return {status: 400, message: MESSAGE_ERROR.REQUIRED_FIELDS};
 

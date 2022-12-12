@@ -655,9 +655,9 @@ app.post('/v1/categoria', cors(), jsonParser, async function(request, response) 
 app.put('/v1/categoriaStatus/:status/:id', cors(), async function(request, response) {
 
     //recebe a variavel status por QueryString (indicada quando precisamos criar filtros)
-    let status = request.query.status;
+    let status = request.params.status;
     //recebe a variavel id por QueryString
-    let id = request.query.id;
+    let id = request.params.id;
     let statusCode;
     let message;
 
@@ -1035,6 +1035,39 @@ app.get('/v1/pizzas', cors(), async function(request, response) {
 
     //retorna todas as pizzas existentes no BD
     const dadosPizzas = await controllerPizza.buscarPizzas();
+
+    //valida se existe retorno de dados
+    if (dadosPizzas) {
+
+        //status 200
+        statusCode = dadosPizzas.status;
+        message = dadosPizzas.message;
+
+    } else {
+
+        //status 404
+        statusCode = 404;
+        message = MESSAGE_ERROR.NOT_FOUND_DB;
+
+    }
+
+    //retorna os dados da API
+    response.status(statusCode);
+    response.json(message);    
+
+});
+
+
+app.get('/v1/todasPizzas', cors(), async function(request, response) {
+
+    let statusCode;
+    let message;
+
+    //import do arquivo controllerPizza
+    const controllerPizza = require('./controller/controllerPizza.js');
+
+    //retorna todas as pizzas existentes no BD
+    const dadosPizzas = await controllerPizza.buscarTodasPizzas();
 
     //valida se existe retorno de dados
     if (dadosPizzas) {
