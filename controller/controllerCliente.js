@@ -117,11 +117,20 @@ const validarCliente = async function (cliente) {
 
         const verificarCliente = require('../model/DAO/cliente.js');
 
-        const result = await verificarCliente.selectCliente(email, senha);
+        const resultCliente = await verificarCliente.selectCliente(email, senha);
 
-        if (result) {
+        if (resultCliente) {
+        
+            // import da biblioteca que gera e valida a autenticidade do JWT
+            const jwt = require('../midware/JWT.js')
 
-            return {status: 200, message: result};
+            // geração do token pelo JWT
+            let tokenUser = await jwt.createJWT(result.id)
+
+            // adiciona uma chave do JSON com o token do usário
+            resultCliente.token = tokenUser
+
+            return {status: 200, message: resultCliente};
 
         } else {
 

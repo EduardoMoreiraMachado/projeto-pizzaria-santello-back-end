@@ -171,8 +171,30 @@ app.delete('/v1/cliente/:id', cors(), jsonParser, async function(request, respon
 
 });
 
+// Função que recebe o token encaminhado nas requisições e solicita a validação
+const verifyJWT = async function(request, response, next) {
+
+    // import da biblioteca para validação do token
+    const jwt = require('./midware/JWT.js')
+
+    // recebe o token encaminhado no header da requisição
+    let token = request.headers[x-access-token]
+
+    // valida a autenticidade de token
+    const atenticidadeToken = await jwt.validateJWT(token)
+
+    // verifica se a requisição poderá continuar (quando o token é verdadeiro) ou o usuário não está autenticado (token inválido)
+    if(atenticidadeToken)
+        // manda a requisição prosseguir
+        next()
+
+    else
+        return response.status(401).end()
+}
+
 //EnPoint para buscar um cliente pelo email e senha
-app.post('/v1/loginCliente', cors(), jsonParser, async function(request, response) {
+    // verifyJTW no corpo do post para que a função midwere seja executada quando a requisição for feita
+app.post('/v1/loginCliente', verifyJWT, cors(), jsonParser, async function(request, response) {
 
     let statusCode;
     let message;
@@ -442,6 +464,7 @@ app.get('/v1/servico/:id', cors(), async function(request, response) {
 
 // Import da Controller de Contato
 const controllerContato = require('./controller/controllerContato.js');
+const { JsonWebTokenError } = require('jsonwebtoken');
 
 //EndPoint para listar todos os contatos
 app.get('/v1/contatos', cors(), async function(request, response) {
