@@ -171,30 +171,8 @@ app.delete('/v1/cliente/:id', cors(), jsonParser, async function(request, respon
 
 });
 
-// Função que recebe o token encaminhado nas requisições e solicita a validação
-const verifyJWT = async function(request, response, next) {
-
-    // import da biblioteca para validação do token
-    const jwt = require('./midware/JWT.js')
-
-    // recebe o token encaminhado no header da requisição
-    let token = request.headers[x-access-token]
-
-    // valida a autenticidade de token
-    const atenticidadeToken = await jwt.validateJWT(token)
-
-    // verifica se a requisição poderá continuar (quando o token é verdadeiro) ou o usuário não está autenticado (token inválido)
-    if(atenticidadeToken)
-        // manda a requisição prosseguir
-        next()
-
-    else
-        return response.status(401).end()
-}
-
 //EnPoint para buscar um cliente pelo email e senha
-    // verifyJTW no corpo do post para que a função midwere seja executada quando a requisição for feita
-app.post('/v1/loginCliente', verifyJWT, cors(), jsonParser, async function(request, response) {
+app.post('/v1/loginCliente', cors(), jsonParser, async function(request, response) {
 
     let statusCode;
     let message;
@@ -1048,7 +1026,31 @@ app.get('/v1/pizza/:id', cors(), async function(request, response) {
 
 });
 
-app.get('/v1/pizzas', cors(), async function(request, response) {
+
+// Função que recebe o token encaminhado nas requisições e solicita a validação
+const verifyJWT = async function(request, response, next) {
+
+    // import da biblioteca para validação do token
+    const jwt = require('./midware/JWT.js')
+
+    // recebe o token encaminhado no header da requisição
+    let token = request.headers['x-access-token']
+
+    // valida a autenticidade de token
+    const atenticidadeToken = await jwt.validateJWT(token)
+
+    // verifica se a requisição poderá continuar (quando o token é verdadeiro) ou o usuário não está autenticado (token inválido)
+    if(atenticidadeToken)
+        // manda a requisição prosseguir
+        next()
+
+    else
+        return response.status(401).end()
+}
+
+//EnPoint para buscar todas as pizzas ativadas do banco de dados
+    // verifyJTW no corpo do post para que a função midwere seja executada quando a requisição for feita
+app.get('/v1/pizzas', verifyJWT, cors(), async function(request, response) {
 
     let statusCode;
     let message;
@@ -1327,7 +1329,7 @@ app.put('/v1/pizzaLikes/:id', cors(), jsonParser, async function(request, respon
 });
 
 //ativa o servidor para receber requisições HTTP
-app.listen(4182, function() {
+app.listen(1206, function() {
 
     console.log('Servidor aguardando requisições...');
 

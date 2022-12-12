@@ -34,6 +34,8 @@ const insertPizza = async function (pizza) {
         //executa o script SQL no BD ($executeRawUnsafe() permite encaminhar uma variável contendo o script)
         const resultProduto = await prisma.$executeRawUnsafe(insertProduto);
 
+        console.log(resultProduto)
+
         if (resultProduto) {
 
             let selectLastID = `select id from tbl_pizza order by id desc limit 1`
@@ -49,7 +51,6 @@ const insertPizza = async function (pizza) {
 
                 //executa o script SQL no BD ($executeRawUnsafe() permite encaminhar uma variável contendo o script)
                 const resultPizza = await prisma.$executeRawUnsafe(updatePizza);
-
                 if (resultPizza) {
 
                     return true;
@@ -73,7 +74,7 @@ const insertPizza = async function (pizza) {
         }
 
     } catch (error) {
-
+        
         return false;
 
     }

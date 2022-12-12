@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken')
 const SECRET = 'eduardo'
 
 // tempo para valida
-const EXPIRES = 182
+const EXPIRES = 300
 
 const createJWT = async function(payload) {
     // Gerar o token
@@ -21,8 +21,8 @@ const validateJWT = async function(token) {
 
     // valida a autenticidade do token
         // decode: serve para pegar outras informações do token (ID, secret, expires)
-    jwt.verify(token, SECRET, async function (erro, decode) {
-        if(erro)
+    jwt.verify(token, SECRET, async function (err, decode) {
+        if(err)
             status = false
 
         else

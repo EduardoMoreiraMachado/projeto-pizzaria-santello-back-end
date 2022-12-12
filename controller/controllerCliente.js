@@ -125,10 +125,10 @@ const validarCliente = async function (cliente) {
             const jwt = require('../midware/JWT.js')
 
             // geração do token pelo JWT
-            let tokenUser = await jwt.createJWT(result.id)
+            let tokenUser = await jwt.createJWT(resultCliente.id)
 
             // adiciona uma chave do JSON com o token do usário
-            resultCliente.token = tokenUser
+            resultCliente[0].token = tokenUser
 
             return {status: 200, message: resultCliente};
 
