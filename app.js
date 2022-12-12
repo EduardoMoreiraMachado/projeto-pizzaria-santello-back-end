@@ -654,10 +654,10 @@ app.post('/v1/categoria', cors(), jsonParser, async function(request, response) 
 //EndPoint para atualizar o status de uma categoria
 app.put('/v1/categoriaStatus/:status/:id', cors(), async function(request, response) {
 
-    //recebe o status enviado por parâmetro na requisição
-    let status = request.params.status;
-    //recebe o id enviado por parâmetro na requisição
-    let id = request.params.id;
+    //recebe a variavel status por QueryString (indicada quando precisamos criar filtros)
+    let status = request.query.status;
+    //recebe a variavel id por QueryString
+    let id = request.query.id;
     let statusCode;
     let message;
 

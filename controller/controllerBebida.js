@@ -46,7 +46,7 @@ const atualizarBebida = async function (bebida) {
 
         return {status: 400, message: MESSAGE_ERROR.REQUIRED_ID};
 
-    }
+    }i
 
     //validação de campos obrigatórios
     if (bebida.nome == undefined || bebida.preco == undefined || bebida.foto == undefined || bebida.peso_liquido == undefined ||
