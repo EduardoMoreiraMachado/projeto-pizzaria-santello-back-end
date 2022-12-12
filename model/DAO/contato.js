@@ -135,11 +135,37 @@ const selectAllContatos = async function() {
     }
 }
 
-// Função para retornar o
+//função para excluir um registro
+const deleteContado = async function (id) {
+
+    try {
+
+        let sql = `delete from tbl_contato where id = ${id};`;
+
+        const rsContato = await prisma.$queryRawUnsafe(sql);
+
+        if (rsContato.length > 0) {
+
+            return true;
+
+        } else {
+
+            return false;
+
+        }
+
+    } catch {
+
+        return false;
+
+    }
+
+}
 
 module.exports = {
     insertContato,
     selectContatoByID,
     selectAllContatos,
-    selectContatosByOpcao
+    selectContatosByOpcao,
+    deleteContado
 }

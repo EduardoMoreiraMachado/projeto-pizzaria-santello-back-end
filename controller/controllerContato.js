@@ -108,9 +108,37 @@ const getContatoByOpcao = async function(opcao) {
     }
 }
 
+
+//função para excluir um registro
+const excluirContato = async function(id) {
+
+    //validação para o id como campo obrigatório
+    if (id == undefined || id == '') {
+
+        return {statusCode: 400, message: MESSAGE_ERROR.REQUIRED_ID};
+
+    } else {
+
+        const deleteContato = modelContato.deleteContado(id);
+
+        if(deleteContato) {
+      
+            return {statusCode: 200, message: MESSAGE_SUCESS.DELETE_ITEM};
+
+        } else {
+
+            return {statusCode: 500, message: MESSAGE_ERROR.INTERNAL_ERROR_DB};
+
+        }
+
+    }
+
+}
+
 module.exports = {
     newContato,
     getAllContatos,
     getContatoByID,
-    getContatoByOpcao
+    getContatoByOpcao,
+    excluirContato
 }

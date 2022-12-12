@@ -20,7 +20,6 @@ const insertCategoria = async function(categoria) {
 
         //executa o script SQL no BD ($executeRawUnsafe() permite encaminhar uma variável contendo o script)
         const result = await prisma.$executeRawUnsafe(sql);
-        console.log(result)
 
         if (result) {
 

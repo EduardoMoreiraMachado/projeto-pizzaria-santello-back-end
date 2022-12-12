@@ -21,8 +21,8 @@ const validateJWT = async function(token) {
 
     // valida a autenticidade do token
         // decode: serve para pegar outras informações do token (ID, secret, expires)
-    jwt.verify(token, SECRET, async function (err, decode) {
-        if(err)
+    jwt.verify(token, SECRET, async function (erro, decode) {
+        if(erro)
             status = false
 
         else

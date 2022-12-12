@@ -569,6 +569,35 @@ app.post('/v1/contato', cors(), jsonParser, async function(request, response) {
     response.json(message);
 });
 
+//EndPoint para excluir um contato
+app.delete('/v1/contato/:id', cors(), jsonParser, async function(request, response) {
+
+    //recebe o id enviado por parâmetro na requisição
+    let id = request.params.id;
+    let statusCode;
+    let message;
+
+    //validação do ID na requisição
+    if (id != '' && id != undefined) {
+
+        //chama a função para exlcuir um contato da controller
+        const deleteContado = await controllerContato.excluirContato(id);
+
+        statusCode = deleteContado.statusCode;
+        message = deleteContado.message;    
+
+    } else {
+
+        statusCode = 400;
+        message = MESSAGE_ERROR.REQUIRED_ID;
+
+    }
+
+    response.status(statusCode);
+    response.json(message);
+
+});
+
 
 /* * * * * * * * * * * * * * * * * * * * *
     rotas para CRUD de categorias (Create, Read, Update e Delete)
