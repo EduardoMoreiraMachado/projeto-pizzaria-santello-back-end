@@ -74,7 +74,7 @@ const insertPizza = async function (pizza) {
         }
 
     } catch (error) {
-        
+
         return false;
 
     }

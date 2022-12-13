@@ -965,6 +965,7 @@ app.post('/v1/pizza', cors(), jsonParser, async function(request, response) {
         
         //recebe do corpo da mensagem o conteúdo
         let dadosBody = request.body;
+
         //realiza um processo de conversão de dados para conseguir comparar o JSON vazio
         if (JSON.stringify(dadosBody) != '{}') {
 
@@ -1122,6 +1123,7 @@ app.get('/v1/todasPizzas', cors(), async function(request, response) {
 
     //retorna todas as pizzas existentes no BD
     const dadosPizzas = await controllerPizza.buscarTodasPizzas();
+
 
     //valida se existe retorno de dados
     if (dadosPizzas) {
