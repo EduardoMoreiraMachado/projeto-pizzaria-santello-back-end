@@ -13,8 +13,6 @@ const novaPizza = async function (pizza) {
     if (pizza.nome == undefined || pizza.preco == undefined || pizza.foto == undefined || pizza.id_categoria == undefined || pizza.ingredientes == undefined || 
         pizza.nome == '' || pizza.preco == '' || pizza.foto == '' || pizza.id_categoria == '' || pizza.ingredientes == '') {
 
-            console.log("result")
-
         return {status: 400, message: MESSAGE_ERROR.REQUIRED_FIELDS};
 
     } else {

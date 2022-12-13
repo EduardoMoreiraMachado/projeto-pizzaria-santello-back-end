@@ -66,13 +66,13 @@ const atualizarStatusCategoria = async function (status, id) {
 }
 
 //função para retornar todos os registros
-const listarCategorias = async function () {
+const listarCategorias = async function (tipo) {
 
     let dadosCategoriasJSON = {};
 
     const { selectAllCategorias } = require('../model/DAO/categoria.js');
 
-    const dadosCategorias = await selectAllCategorias();
+    const dadosCategorias = await selectAllCategorias(tipo);
 
     if (dadosCategorias) {
 

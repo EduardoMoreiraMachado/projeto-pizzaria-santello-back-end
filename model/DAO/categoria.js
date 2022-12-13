@@ -60,10 +60,10 @@ const updateStatusCategoria = async function (status, id) {
 }
 
 //função para retornar todos os registros do BD 
-const selectAllCategorias = async function () {
+const selectAllCategorias = async function (tipo) {
 
     //objeto do tipo RecordSet (rsCategorias) para receber os dados do BD
-    const rsCategorias = await prisma.$queryRaw`select * from tbl_categoria order by id desc`;
+    const rsCategorias = await prisma.$queryRaw`select * from tbl_categoria where codigo_tipo like ${tipo}`;
 
     if (rsCategorias.length > 0) {
 
