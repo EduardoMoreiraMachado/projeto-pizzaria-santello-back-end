@@ -14,7 +14,7 @@ const prisma = new PrismaClient();
 //função para inserir registros
 const insertPizza = async function (pizza) {
 
-    try {
+    // try {
 
         let insertProduto = `insert into tbl_produto(
                                          nome,
@@ -73,11 +73,11 @@ const insertPizza = async function (pizza) {
 
         }
 
-    } catch (error) {
+    // } catch (error) {
 
-        return false;
+    //     return false;
 
-    }
+    // }
 
 }
 
@@ -86,11 +86,10 @@ const updatePizza = async function (pizza) {
 
     try {
         let sqlUpdate = `CALL update_produto_pizza (${pizza.id_produto}, '${pizza.nome}', ${pizza.preco}, '${pizza.foto}', ${pizza.id_categoria},
-                                                    ${pizza.id_pizza}, ${pizza.desconto}, ${pizza.qntd_favorito}, '${pizza.ingredientes}');`
+                                                    ${pizza.id_pizza}, ${pizza.desconto}, '${pizza.ingredientes}');`
 
         const result = await prisma.$executeRawUnsafe(sqlUpdate);
 
-        console.log(result)
         if (result) {
             return true
         }

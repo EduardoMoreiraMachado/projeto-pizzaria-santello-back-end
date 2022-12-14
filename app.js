@@ -605,16 +605,17 @@ app.delete('/v1/contato/:id', cors(), jsonParser, async function(request, respon
 * * * * * * * * * * * * * * * * * * * * */
 
 //EndPoint para listar todos as categorias
-app.get('/v1/categorias', cors(), async function(request, response) {
+app.get('/v1/categorias/:codigo_tipo', cors(), async function(request, response) {
 
     let statusCode;
     let message;
+    let codigoTipo = request.params.codigo_tipo
 
     //import do arquivo controllerCategoria
     const controllerCategoria = require('./controller/controllerCategoria.js');
 
     //retorna todos os servicos existentes no BD
-    const dadosCategorias = await controllerCategoria.listarCategorias();
+    const dadosCategorias = await controllerCategoria.listarCategorias(codigoTipo);
 
     //valida se existe retorno de dados
     if (dadosCategorias) {
@@ -778,7 +779,7 @@ app.delete('/v1/bebida/:id', cors(), jsonParser, async function(request, respons
         //import do arquivo da controller de bebida
         const controllerBebida = require('./controller/controllerBebida.js');
         //chama a função para exlcuir uma bebida da controller
-        const deleteBebida = await controlleBebida.excluirBebida(id);
+        const deleteBebida = await controllerBebida.excluirBebida(id);
 
         statusCode = deleteBebida.status;
         message = deleteBebida.message;    
@@ -1080,7 +1081,7 @@ const verifyJWT = async function(request, response, next) {
 
 //EnPoint para buscar todas as pizzas ativadas do banco de dados
     // verifyJTW no corpo do post para que a função midwere seja executada quando a requisição for feita
-app.get('/v1/pizzas', verifyJWT, cors(), async function(request, response) {
+app.get('/v1/pizzas', cors(), async function(request, response) {
 
     let statusCode;
     let message;
@@ -1227,15 +1228,17 @@ app.put('/v1/pizza/:id', cors(), jsonParser, async function(request, response) {
 
         //realiza um processo de conversão de dados para conseguir comparar o JSON vazio
         if (JSON.stringify(dadosBody) != '{}') {
+            console.log(dadosBody)
             
             //recebe o id enviado por parâmetro na requisição
             let id = request.params.id;
+            console.log(id + 'kjdsnf')
 
             //validação do ID na requisição
             if (id != '' && id != undefined && !(isNaN(id))) {
 
                 //adiciona o id no JSON que chegou do corpo da requisição
-                dadosBody.id_pizza = id;
+                dadosBody.id_pizza = parseInt(id);
                 //import do arquivo da controller de serviço
                 const controllerPizza = require('./controller/controllerPizza.js');
                 //chama a função para atualizar um aluno da controller e encaminha os dados do body

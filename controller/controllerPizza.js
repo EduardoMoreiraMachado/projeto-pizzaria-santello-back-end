@@ -9,6 +9,8 @@ const { MESSAGE_ERROR, MESSAGE_SUCESS } = require('../module/config.js');
 
 //função para gerar um novo registro
 const novaPizza = async function (pizza) {
+
+    console.log(pizza)
     //validação de campos obrigatórios
     if (pizza.nome == undefined || pizza.preco == undefined || pizza.foto == undefined || pizza.id_categoria == undefined || pizza.ingredientes == undefined || 
         pizza.nome == '' || pizza.preco == '' || pizza.foto == '' || pizza.id_categoria == '' || pizza.ingredientes == '') {
@@ -175,14 +177,14 @@ const atualizarPizza = async function (pizza) {
     //validação para o id como campo obrigatório
     if (pizza.id_pizza == undefined || pizza.id_pizza == ''  || pizza.id_categoria == undefined || pizza.id_categoria == '' ||
         pizza.id_produto == undefined || pizza.id_produto == '') {
-
+            console.log(pizza)
         return {status: 400, message: MESSAGE_ERROR.REQUIRED_ID};
 
     }
 
     //validação de campos obrigatórios
-    if (pizza.nome == undefined || pizza.preco == undefined || pizza.foto == undefined || pizza.ingredientes == undefined || pizza.qntd_favorito == undefined ||
-        pizza.nome == '' || isNaN(pizza.preco) || pizza.foto == '' || pizza.ingredientes == '' || isNaN(pizza.qntd_favorito)) {
+    if (pizza.nome == undefined || pizza.preco == undefined || pizza.foto == undefined || pizza.ingredientes == undefined ||
+        pizza.nome == '' || isNaN(pizza.preco) || pizza.foto == '' || pizza.ingredientes == '') {
 
         return {status: 400, message: MESSAGE_ERROR.REQUIRED_FIELDS};
 
