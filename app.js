@@ -30,13 +30,35 @@ app.use((request, response, next) => {
 //objeto que permite receber um JSON no body das requisições
 const jsonParser = bodyParser.json();
 
+
+// Função que recebe o token encaminhado nas requisições e solicita a validação
+const verifyJWT = async function(request, response, next) {
+
+    // import da biblioteca para validação do token
+    const jwt = require('./midware/JWT.js')
+
+    // recebe o token encaminhado no header da requisição
+    let token = request.headers['x-access-token']
+
+    // valida a autenticidade de token
+    const atenticidadeToken = await jwt.validateJWT(token)
+
+    // verifica se a requisição poderá continuar (quando o token é verdadeiro) ou o usuário não está autenticado (token inválido)
+    if(atenticidadeToken)
+        // manda a requisição prosseguir
+        next()
+
+    else
+        return response.status(401).end()
+}
+
 /* * * * * * * * * * * * * * * * * * * * *
     rotas para CRUD de cliente (Create, Read, Update e Delete)
     data: 23/11/2022
 * * * * * * * * * * * * * * * * * * * * */
 
 //Endpoint para inserir um novo cliente
-app.post('/v1/cliente', cors(), jsonParser, async function(request, response) {
+app.post('/v1/cliente', verifyJWT, cors(), jsonParser, async function(request, response) {
 
     let statusCode;
     let message;
@@ -81,7 +103,7 @@ app.post('/v1/cliente', cors(), jsonParser, async function(request, response) {
 });
 
 //EndPoint para atualizar registros de um cliente 
-app.put('/v1/cliente/:id', cors(), jsonParser, async function(request, response) {
+app.put('/v1/cliente/:id', verifyJWT, cors(), jsonParser, async function(request, response) {
 
     let statusCode;
     let message;
@@ -141,7 +163,7 @@ app.put('/v1/cliente/:id', cors(), jsonParser, async function(request, response)
 });
 
 //EndPoint para excluir um cliente
-app.delete('/v1/cliente/:id', cors(), jsonParser, async function(request, response) {
+app.delete('/v1/cliente/:id', verifyJWT, cors(), jsonParser, async function(request, response) {
 
     //recebe o id enviado por parâmetro na requisição
     let id = request.params.id;
@@ -216,7 +238,6 @@ app.post('/v1/loginCliente', cors(), jsonParser, async function(request, respons
 
 });
 
-
 /* * * * * * * * * * * * * * * * * * * * *
     rotas para CRUD de serviços (Create, Read, Update e Delete)
     data: 23/11/2022
@@ -256,7 +277,7 @@ app.get('/v1/servicos', cors(), async function(request, response) {
 });
 
 //EndPoint para inserir um novo serviço
-app.post('/v1/servico', cors(), jsonParser, async function(request, response) {
+app.post('/v1/servico', cors(), verifyJWT, jsonParser, async function(request, response) {
 
     let statusCode;
     let message;
@@ -300,7 +321,7 @@ app.post('/v1/servico', cors(), jsonParser, async function(request, response) {
 });
 
 //EndPoint para atualizar registros de um serviço 
-app.put('/v1/servico/:id', cors(), jsonParser, async function(request, response) {
+app.put('/v1/servico/:id', verifyJWT, cors(), jsonParser, async function(request, response) {
 
     let statusCode;
     let message;
@@ -360,7 +381,7 @@ app.put('/v1/servico/:id', cors(), jsonParser, async function(request, response)
 });
 
 //EndPoint para excluir um serviço
-app.delete('/v1/servico/:id', cors(), jsonParser, async function(request, response) {
+app.delete('/v1/servico/:id', verifyJWT, cors(), jsonParser, async function(request, response) {
 
     //recebe o id enviado por parâmetro na requisição
     let id = request.params.id;
@@ -391,7 +412,7 @@ app.delete('/v1/servico/:id', cors(), jsonParser, async function(request, respon
 });
 
 //EnPoint para buscar um serviço pelo ID
-app.get('/v1/servico/:id', cors(), async function(request, response) {
+app.get('/v1/servico/:id', verifyJWT, cors(), async function(request, response) {
 
     let statusCode;
     let message;
@@ -445,7 +466,7 @@ const controllerContato = require('./controller/controllerContato.js');
 const { JsonWebTokenError } = require('jsonwebtoken');
 
 //EndPoint para listar todos os contatos
-app.get('/v1/contatos', cors(), async function(request, response) {
+app.get('/v1/contatos', verifyJWT, cors(), async function(request, response) {
     let statusCode
     let message
 
@@ -469,7 +490,7 @@ app.get('/v1/contatos', cors(), async function(request, response) {
 })
 
 //EnPoint para buscar um contato pelo ID
-app.get('/v1/contato/:id', cors(), async function(request, response) {
+app.get('/v1/contato/:id', verifyJWT, cors(), async function(request, response) {
     let statusCode
     let message
     let idContato = request.params.id
@@ -502,7 +523,7 @@ app.get('/v1/contato/:id', cors(), async function(request, response) {
 })
 
 //EnPoint para buscar um contato pelo ID
-app.get('/v1/contatos/filtro/:opcao', cors(), async function(request, response) {
+app.get('/v1/contatos/filtro/:opcao', verifyJWT, cors(), async function(request, response) {
     let statusCode
     let message
     let opcaoContato = request.params.opcao
@@ -570,7 +591,7 @@ app.post('/v1/contato', cors(), jsonParser, async function(request, response) {
 });
 
 //EndPoint para excluir um contato
-app.delete('/v1/contato/:id', cors(), jsonParser, async function(request, response) {
+app.delete('/v1/contato/:id', verifyJWT, cors(), jsonParser, async function(request, response) {
 
     //recebe o id enviado por parâmetro na requisição
     let id = request.params.id;
@@ -639,7 +660,7 @@ app.get('/v1/categorias/:codigo_tipo', cors(), async function(request, response)
 });
 
 //EndPoint para inserir uma nova categoria
-app.post('/v1/categoria', cors(), jsonParser, async function(request, response) {
+app.post('/v1/categoria', cors(), verifyJWT, jsonParser, async function(request, response) {
 
     let statusCode;
     let message;
@@ -683,7 +704,7 @@ app.post('/v1/categoria', cors(), jsonParser, async function(request, response) 
 });
 
 //EndPoint para atualizar o status de uma categoria
-app.put('/v1/categoriaStatus/:status/:id', cors(), async function(request, response) {
+app.put('/v1/categoriaStatus/:status/:id', verifyJWT, cors(), async function(request, response) {
 
     //recebe a variavel status por QueryString (indicada quando precisamos criar filtros)
     let status = request.params.status;
@@ -722,7 +743,7 @@ app.put('/v1/categoriaStatus/:status/:id', cors(), async function(request, respo
 * * * * * * * * * * * * * * * * * * * * */
 
 //EndPoint para inserir uma nova bebida
-app.post('/v1/bebida', cors(), jsonParser, async function(request, response) {
+app.post('/v1/bebida', verifyJWT, cors(), jsonParser, async function(request, response) {
 
     let statusCode;
     let message;
@@ -766,7 +787,7 @@ app.post('/v1/bebida', cors(), jsonParser, async function(request, response) {
 });
 
 //EndPoint para excluir uma bebida
-app.delete('/v1/bebida/:id', cors(), jsonParser, async function(request, response) {
+app.delete('/v1/bebida/:id', verifyJWT, cors(), jsonParser, async function(request, response) {
 
     //recebe o id enviado por parâmetro na requisição
     let id = request.params.id;
@@ -797,7 +818,7 @@ app.delete('/v1/bebida/:id', cors(), jsonParser, async function(request, respons
 });
 
 //EndPoint para buscar uma bebida por id
-app.get('/v1/bebida/:id', cors(), async function(request, response) {
+app.get('/v1/bebida/:id', verifyJWT, cors(), async function(request, response) {
 
     //recebe o id enviado por parâmetro na requisição
     let id = request.params.id;
@@ -858,7 +879,7 @@ app.get('/v1/bebidas', cors(), async function(request, response) {
 });
 
 //EndPoint para atualizar registros de uma bebida 
-app.put('/v1/bebida/:id', cors(), jsonParser, async function(request, response) {
+app.put('/v1/bebida/:id', verifyJWT, cors(), jsonParser, async function(request, response) {
 
     let statusCode;
     let message;
@@ -918,7 +939,7 @@ app.put('/v1/bebida/:id', cors(), jsonParser, async function(request, response) 
 });
 
 //EndPoint para buscar uma bebida por categoria
-app.get('/v1/bebidasCategoria/:id', cors(), async function(request, response) {
+app.get('/v1/bebidasCategoria/:id', verifyJWT, cors(), async function(request, response) {
 
     //recebe o id enviado por parâmetro na requisição
     let id = request.params.id;
@@ -953,7 +974,7 @@ app.get('/v1/bebidasCategoria/:id', cors(), async function(request, response) {
 * * * * * * * * * * * * * * * * * * * * */
 
 //EndPoint para inserir uma nova pizza
-app.post('/v1/pizza', cors(), jsonParser, async function(request, response) {
+app.post('/v1/pizza', verifyJWT, cors(), jsonParser, async function(request, response) {
 
     let statusCode;
     let message;
@@ -998,7 +1019,7 @@ app.post('/v1/pizza', cors(), jsonParser, async function(request, response) {
 });
 
 //EndPoint para excluir uma pizza
-app.delete('/v1/pizza/:id', cors(), jsonParser, async function(request, response) {
+app.delete('/v1/pizza/:id', verifyJWT, cors(), jsonParser, async function(request, response) {
 
     //recebe o id enviado por parâmetro na requisição
     let id = request.params.id;
@@ -1029,7 +1050,7 @@ app.delete('/v1/pizza/:id', cors(), jsonParser, async function(request, response
 });
 
 //EndPoint para buscar uma pizza por id
-app.get('/v1/pizza/:id', cors(), async function(request, response) {
+app.get('/v1/pizza/:id', verifyJWT, cors(), async function(request, response) {
 
     //recebe o id enviado por parâmetro na requisição
     let id = request.params.id;
@@ -1056,28 +1077,6 @@ app.get('/v1/pizza/:id', cors(), async function(request, response) {
     response.json(message);
 
 });
-
-
-// Função que recebe o token encaminhado nas requisições e solicita a validação
-const verifyJWT = async function(request, response, next) {
-
-    // import da biblioteca para validação do token
-    const jwt = require('./midware/JWT.js')
-
-    // recebe o token encaminhado no header da requisição
-    let token = request.headers['x-access-token']
-
-    // valida a autenticidade de token
-    const atenticidadeToken = await jwt.validateJWT(token)
-
-    // verifica se a requisição poderá continuar (quando o token é verdadeiro) ou o usuário não está autenticado (token inválido)
-    if(atenticidadeToken)
-        // manda a requisição prosseguir
-        next()
-
-    else
-        return response.status(401).end()
-}
 
 //EnPoint para buscar todas as pizzas ativadas do banco de dados
     // verifyJTW no corpo do post para que a função midwere seja executada quando a requisição for feita
@@ -1114,7 +1113,7 @@ app.get('/v1/pizzas', cors(), async function(request, response) {
 });
 
 
-app.get('/v1/todasPizzas', cors(), async function(request, response) {
+app.get('/v1/todasPizzas', verifyJWT, cors(), async function(request, response) {
 
     let statusCode;
     let message;
@@ -1212,7 +1211,7 @@ app.get('/v1/pizzasFavoritas', cors(), async function(request, response) {
 });
 
 //EndPoint para atualizar registros de uma pizza
-app.put('/v1/pizza/:id', cors(), jsonParser, async function(request, response) {
+app.put('/v1/pizza/:id', verifyJWT, cors(), jsonParser, async function(request, response) {
 
     let statusCode;
     let message;
@@ -1303,7 +1302,7 @@ app.get('/v1/pizzasCategoria/:id', cors(), async function(request, response) {
 });
 
 //EndPoint para atualizar registros da quantidade de likes de uma pizza 
-app.put('/v1/pizzaLikes/:id', cors(), jsonParser, async function(request, response) {
+app.put('/v1/pizzaLikes/:id', verifyJWT, cors(), jsonParser, async function(request, response) {
 
     let statusCode;
     let message;
